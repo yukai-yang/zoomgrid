@@ -48,9 +48,8 @@ ls( grep("zoomgrid", search()) )
 
 Consider the two-dimensional **Rastrigin function** is a non-convex function which is widely used for testing the performances of some optimization algorithms.
 
-$f(x_1, x_2) = A \cdot n + \sum_{i=1}^2 \left( x_i^2 - A \cos(2 \pi x_i) \right)$
-
-where $x_i \in [-5.12, 5.12]$. It has many local minimum and its global minimum is at (0, 0) with the minimum value 0.
+$$ f(x_1, x_2) = 2 A + \sum_{i=1}^2 [ x_i^2 - A \cos(2 \pi x_i) ] $$
+where $x_i \in [-5.12, 5.12]$ and $A = 10$. It has many local minimum and its global minimum is at (0, 0) with the minimum value 0.
 ![](https://upload.wikimedia.org/wikipedia/commons/8/8b/Rastrigin_function.png)
 
 Graph source: [Rastrigin function @ WIKIPEDIA](https://en.wikipedia.org/wiki/Rastrigin_function). We give the function in R: 
