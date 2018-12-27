@@ -40,8 +40,12 @@ ls( grep("zoomgrid", search()) )
 ### Motivation
 
 Consider the two-dimensional **Rastrigin function** is a non-convex function which is widely used for testing the performances of some optimization algorithms.
+
 $$f(x\_1, x\_2) = A \\cdot n + \\sum\_{i=1}^2 \\left( x\_i^2 - A \\cos(2 \\pi x\_i) \\right)$$
- where *x*<sub>*i*</sub> ∈ \[ − 5.12, 5.12\]. It has many local minimum and its global minimum is at (0, 0) with the minimum value 0. See [Rastrigin function @ WIKIPEDIA](https://en.wikipedia.org/wiki/Rastrigin_function). We give the function in R:
+
+where *x*<sub>*i*</sub> ∈ \[ − 5.12, 5.12\]. It has many local minimum and its global minimum is at (0, 0) with the minimum value 0. ![](Rastrigin_function.png)
+
+Graph source: [Rastrigin function @ WIKIPEDIA](https://en.wikipedia.org/wiki/Rastrigin_function). We give the function in R:
 
 ``` r
 # Rastrigin function
@@ -115,7 +119,7 @@ ret1 = grid_search(Rastrigin, grid, silent=FALSE)
 #> The minimizer is believed to be in the neighbourhood of -0.02 -0.02.
 #> ---------------------------------------------------------------------------
 #>    user  system elapsed 
-#>   8.677   0.032   8.748 
+#>   8.701   0.027   8.764 
 #> ###########################################################################
 ret1$par
 #> [1] -0.02 -0.02
@@ -134,7 +138,7 @@ ret2 = grid_search(Rastrigin, grid, num=2, parallel=TRUE, silent=FALSE)
 #> The minimizer is believed to be in the neighbourhood of -0.02 -0.02.
 #> ---------------------------------------------------------------------------
 #>    user  system elapsed 
-#>  14.766   0.261   4.192 
+#>   15.38    0.29    4.72 
 #> ###########################################################################
 ret2$par
 #> [1] -0.02 -0.02
@@ -153,7 +157,7 @@ ret3 = grid_search(Rastrigin, grid, zoom=2, num=2, parallel=TRUE, silent=FALSE)
 #> The minimizer is believed to be in the neighbourhood of 5.590496e-05 5.590496e-05.
 #> ---------------------------------------------------------------------------
 #>    user  system elapsed 
-#>  26.032   1.566   7.638 
+#>  26.195   1.603   7.687 
 #> ###########################################################################
 ret3$par
 #> [1] 5.590496e-05 5.590496e-05
