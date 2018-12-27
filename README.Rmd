@@ -74,6 +74,9 @@ tmp3 = optim(par = par, Rastrigin, method='L-BFGS-B')
 tmp4 = optim(par = par, Rastrigin, method='SANN')
 
 tmp1$par; tmp1$value
+tmp2$par; tmp2$value
+tmp3$par; tmp3$value
+tmp4$par; tmp4$value
 ```
 
 

@@ -72,6 +72,15 @@ tmp4 = optim(par = par, Rastrigin, method='SANN')
 tmp1$par; tmp1$value
 #> [1] -1.9899136 -0.9949483
 #> [1] 4.97479
+tmp2$par; tmp2$value
+#> [1] -0.9949586  0.9949586
+#> [1] 1.989918
+tmp3$par; tmp3$value
+#> [1] -1.989912e+00  2.913338e-09
+#> [1] 3.979831
+tmp4$par; tmp4$value
+#> [1] 0.97915333 0.01486102
+#> [1] 1.088185
 ```
 
 ### Build the grid
