@@ -78,15 +78,47 @@ tmp2$par; tmp2$value
 tmp3$par; tmp3$value
 tmp4$par; tmp4$value
 ```
+None of them are satisfactory...
 
 
 ### Build the grid
 
-For details, see
+We need to build grid first for the grid search. For details, see
 
-```{r type1, eval=F}
+```{r show, eval=F}
 ?build_grid
 ```
 
-First we build the grid by running
+We build the grid by running
 
+```{r build}
+# build the grid
+bin = c(from=-5.12, to=5.12, by=.1)
+grid = build_grid(bin,bin)
+```
+
+### Grid search
+
+We can first try the sequential (no parallel) grid search
+
+```{r gs_nozoom}
+# serial computation
+ret1 = grid_search(Rastrigin, grid, silent=FALSE)
+ret1$par
+```
+
+Then we run the parallel one
+
+```{r pgs_nozoom}
+# parallel computation
+ret2 = grid_search(Rastrigin, grid, num=2, parallel=TRUE, silent=FALSE)
+ret2$par
+```
+
+Try the grid search with a zoom!
+
+```{r pgs_zoom}
+# grid search with a zoom!
+ret3 = grid_search(Rastrigin, grid, zoom=2, num=2, parallel=TRUE, silent=FALSE)
+ret3$par
+```

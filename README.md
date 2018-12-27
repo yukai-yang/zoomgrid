@@ -83,12 +83,78 @@ tmp4$par; tmp4$value
 #> [1] 1.088185
 ```
 
+None of them are satisfactory...
+
 ### Build the grid
 
-For details, see
+We need to build grid first for the grid search. For details, see
 
 ``` r
 ?build_grid
 ```
 
-First we build the grid by running
+We build the grid by running
+
+``` r
+# build the grid
+bin = c(from=-5.12, to=5.12, by=.1)
+grid = build_grid(bin,bin)
+```
+
+### Grid search
+
+We can first try the sequential (no parallel) grid search
+
+``` r
+# serial computation
+ret1 = grid_search(Rastrigin, grid, silent=FALSE)
+#> ###########################################################################
+#> zoomgrid version 1.0.0 (Red Grid)
+#> ---------------------------------------------------------------------------
+#> The Grid Search of 0 zoom-in layers with 1 points each gives 1 results.
+#> The minimizer is believed to be in the neighbourhood of -0.02 -0.02.
+#> ---------------------------------------------------------------------------
+#>    user  system elapsed 
+#>   8.677   0.032   8.748 
+#> ###########################################################################
+ret1$par
+#> [1] -0.02 -0.02
+```
+
+Then we run the parallel one
+
+``` r
+# parallel computation
+ret2 = grid_search(Rastrigin, grid, num=2, parallel=TRUE, silent=FALSE)
+#> ###########################################################################
+#> zoomgrid version 1.0.0 (Red Grid)
+#> ---------------------------------------------------------------------------
+#> Parallel computation runs with 4 cores.
+#> The Grid Search of 0 zoom-in layers with 2 points each gives 2 results.
+#> The minimizer is believed to be in the neighbourhood of -0.02 -0.02.
+#> ---------------------------------------------------------------------------
+#>    user  system elapsed 
+#>  14.766   0.261   4.192 
+#> ###########################################################################
+ret2$par
+#> [1] -0.02 -0.02
+```
+
+Try the grid search with a zoom!
+
+``` r
+# grid search with a zoom!
+ret3 = grid_search(Rastrigin, grid, zoom=2, num=2, parallel=TRUE, silent=FALSE)
+#> ###########################################################################
+#> zoomgrid version 1.0.0 (Red Grid)
+#> ---------------------------------------------------------------------------
+#> Parallel computation runs with 4 cores.
+#> The Grid Search of 2 zoom-in layers with 2 points each gives 14 results.
+#> The minimizer is believed to be in the neighbourhood of 5.590496e-05 5.590496e-05.
+#> ---------------------------------------------------------------------------
+#>    user  system elapsed 
+#>  26.032   1.566   7.638 
+#> ###########################################################################
+ret3$par
+#> [1] 5.590496e-05 5.590496e-05
+```
