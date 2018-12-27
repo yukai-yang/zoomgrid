@@ -127,3 +127,9 @@ Try the grid search with a zoom!
 ret3 = grid_search(Rastrigin, grid, zoom=2, num=2, parallel=TRUE, silent=FALSE)
 ret3$par
 ```
+
+Sometimes it is strongly recommended to check the time consumed by running the grid search first. This is extremely useful when the user is going to run \code{\link{grid_search}} on some super-computing server and need to know approximately how long time it will take in order to specify the corresponding settings according to some batch system like SLURM for example. So you can do as follows
+```{r pgs_check}
+ret3 = grid_search_check(Rastrigin, grid, zoom=2, num=2, parallel=TRUE, silent=FALSE)
+ret3 = grid_search(Rastrigin, grid, zoom=2, num=2, parallel=TRUE, silent=FALSE)
+```

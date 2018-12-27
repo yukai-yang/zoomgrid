@@ -34,7 +34,7 @@ You can take a look at all the available functions and data in the package
 
 ``` r
 ls( grep("zoomgrid", search()) ) 
-#> [1] "build_grid"  "grid_search"
+#> [1] "build_grid"        "grid_search"       "grid_search_check"
 ```
 
 ### Motivation
@@ -119,7 +119,7 @@ ret1 = grid_search(Rastrigin, grid, silent=FALSE)
 #> The minimizer is believed to be in the neighbourhood of -0.02 -0.02.
 #> ---------------------------------------------------------------------------
 #>    user  system elapsed 
-#>   8.701   0.027   8.764 
+#>   8.501   0.032   8.564 
 #> ###########################################################################
 ret1$par
 #> [1] -0.02 -0.02
@@ -138,7 +138,7 @@ ret2 = grid_search(Rastrigin, grid, num=2, parallel=TRUE, silent=FALSE)
 #> The minimizer is believed to be in the neighbourhood of -0.02 -0.02.
 #> ---------------------------------------------------------------------------
 #>    user  system elapsed 
-#>   15.38    0.29    4.72 
+#>  14.635   0.409   4.093 
 #> ###########################################################################
 ret2$par
 #> [1] -0.02 -0.02
@@ -157,8 +157,30 @@ ret3 = grid_search(Rastrigin, grid, zoom=2, num=2, parallel=TRUE, silent=FALSE)
 #> The minimizer is believed to be in the neighbourhood of 5.590496e-05 5.590496e-05.
 #> ---------------------------------------------------------------------------
 #>    user  system elapsed 
-#>  26.195   1.603   7.687 
+#>  27.725   2.118   8.345 
 #> ###########################################################################
 ret3$par
 #> [1] 5.590496e-05 5.590496e-05
+```
+
+Sometimes it is strongly recommended to check the time consumed by running the grid search first. This is extremely useful when the user is going to run on some super-computing server and need to know approximately how long time it will take in order to specify the corresponding settings according to some batch system like SLURM for example. So you can do as follows
+
+``` r
+ret3 = grid_search_check(Rastrigin, grid, zoom=2, num=2, parallel=TRUE, silent=FALSE)
+#> ###########################################################################
+#> zoomgrid version 1.0.0 (Red Grid)
+#> ---------------------------------------------------------------------------
+#> Parallel computation runs with 4 cores.
+#> The expected time consumed by running the grid search is around 8.985554 seconds.
+ret3 = grid_search(Rastrigin, grid, zoom=2, num=2, parallel=TRUE, silent=FALSE)
+#> ###########################################################################
+#> zoomgrid version 1.0.0 (Red Grid)
+#> ---------------------------------------------------------------------------
+#> Parallel computation runs with 4 cores.
+#> The Grid Search of 2 zoom-in layers with 2 points each gives 14 results.
+#> The minimizer is believed to be in the neighbourhood of 5.590496e-05 5.590496e-05.
+#> ---------------------------------------------------------------------------
+#>    user  system elapsed 
+#>  26.410   1.586   7.918 
+#> ###########################################################################
 ```
