@@ -119,7 +119,7 @@ ret1 = grid_search(Rastrigin, grid, silent=FALSE)
 #> The minimizer is believed to be in the neighbourhood of -0.02 -0.02.
 #> ---------------------------------------------------------------------------
 #>    user  system elapsed 
-#>   8.948   0.057   9.107 
+#>   8.814   0.048   8.922 
 #> ###########################################################################
 ret1$par
 #> [1] -0.02 -0.02
@@ -138,7 +138,7 @@ ret2 = grid_search(Rastrigin, grid, num=2, parallel=TRUE, silent=FALSE)
 #> The minimizer is believed to be in the neighbourhood of -0.02 -0.02.
 #> ---------------------------------------------------------------------------
 #>    user  system elapsed 
-#>  14.972   0.460   4.480 
+#>  15.251   0.515   4.660 
 #> ###########################################################################
 ret2$par
 #> [1] -0.02 -0.02
@@ -157,7 +157,7 @@ ret3 = grid_search(Rastrigin, grid, zoom=2, num=2, parallel=TRUE, silent=FALSE)
 #> The minimizer is believed to be in the neighbourhood of 5.590496e-05 5.590496e-05.
 #> ---------------------------------------------------------------------------
 #>    user  system elapsed 
-#>  28.671   2.226   9.186 
+#>  29.171   2.402   9.589 
 #> ###########################################################################
 ret3$par
 #> [1] 5.590496e-05 5.590496e-05
@@ -171,7 +171,7 @@ ret3 = grid_search_check(Rastrigin, grid, zoom=2, num=2, parallel=TRUE, silent=F
 #> zoomgrid version 1.0.0 (Red Grid)
 #> ---------------------------------------------------------------------------
 #> Parallel computation runs with 4 cores.
-#> The expected time consumed by running the grid search is around 9.166205 seconds.
+#> The expected time consumed by running the grid search is around 12.62368 seconds.
 #> ###########################################################################
 ret3 = grid_search(Rastrigin, grid, zoom=2, num=2, parallel=TRUE, silent=FALSE)
 #> ###########################################################################
@@ -182,6 +182,6 @@ ret3 = grid_search(Rastrigin, grid, zoom=2, num=2, parallel=TRUE, silent=FALSE)
 #> The minimizer is believed to be in the neighbourhood of 5.590496e-05 5.590496e-05.
 #> ---------------------------------------------------------------------------
 #>    user  system elapsed 
-#>  26.671   1.606   7.948 
+#>  28.655   1.910   8.894 
 #> ###########################################################################
 ```
