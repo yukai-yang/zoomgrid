@@ -45,7 +45,11 @@ Consider the two-dimensional **Rastrigin function** is a non-convex function whi
 
 where *x*<sub>*i*</sub> ∈ \[ − 5.12, 5.12\] and *A* = 10. It has many local minimum and its global minimum is at (0, 0) with the minimum value 0. ![](https://upload.wikimedia.org/wikipedia/commons/8/8b/Rastrigin_function.png)
 
-Graph source: [Rastrigin function @ WIKIPEDIA](https://en.wikipedia.org/wiki/Rastrigin_function). We give the function in R:
+Graph source: [Rastrigin function @ WIKIPEDIA](https://en.wikipedia.org/wiki/Rastrigin_function).
+
+<a title="Diegotorquemada [Public domain], from Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File:Rastrigin_function.png"><img width="512" alt="Rastrigin function" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Rastrigin_function.png/512px-Rastrigin_function.png"></a>
+
+We give the function in R:
 
 ``` r
 # Rastrigin function
@@ -119,7 +123,7 @@ ret1 = grid_search(Rastrigin, grid, silent=FALSE)
 #> The minimizer is believed to be in the neighbourhood of -0.02 -0.02.
 #> ---------------------------------------------------------------------------
 #>    user  system elapsed 
-#>   8.814   0.048   8.922 
+#>   8.887   0.054   9.029 
 #> ###########################################################################
 ret1$par
 #> [1] -0.02 -0.02
@@ -138,7 +142,7 @@ ret2 = grid_search(Rastrigin, grid, num=2, parallel=TRUE, silent=FALSE)
 #> The minimizer is believed to be in the neighbourhood of -0.02 -0.02.
 #> ---------------------------------------------------------------------------
 #>    user  system elapsed 
-#>  15.251   0.515   4.660 
+#>  14.740   0.404   4.330 
 #> ###########################################################################
 ret2$par
 #> [1] -0.02 -0.02
@@ -157,7 +161,7 @@ ret3 = grid_search(Rastrigin, grid, zoom=2, num=2, parallel=TRUE, silent=FALSE)
 #> The minimizer is believed to be in the neighbourhood of 5.590496e-05 5.590496e-05.
 #> ---------------------------------------------------------------------------
 #>    user  system elapsed 
-#>  29.171   2.402   9.589 
+#>  27.662   1.797   8.526 
 #> ###########################################################################
 ret3$par
 #> [1] 5.590496e-05 5.590496e-05
@@ -171,7 +175,7 @@ ret3 = grid_search_check(Rastrigin, grid, zoom=2, num=2, parallel=TRUE, silent=F
 #> zoomgrid version 1.0.0 (Red Grid)
 #> ---------------------------------------------------------------------------
 #> Parallel computation runs with 4 cores.
-#> The expected time consumed by running the grid search is around 12.62368 seconds.
+#> The expected time consumed by running the grid search is around 8.894536 seconds.
 #> ###########################################################################
 ret3 = grid_search(Rastrigin, grid, zoom=2, num=2, parallel=TRUE, silent=FALSE)
 #> ###########################################################################
@@ -182,6 +186,6 @@ ret3 = grid_search(Rastrigin, grid, zoom=2, num=2, parallel=TRUE, silent=FALSE)
 #> The minimizer is believed to be in the neighbourhood of 5.590496e-05 5.590496e-05.
 #> ---------------------------------------------------------------------------
 #>    user  system elapsed 
-#>  28.655   1.910   8.894 
+#>  26.174   1.441   7.617 
 #> ###########################################################################
 ```
