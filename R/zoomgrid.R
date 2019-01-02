@@ -1,0 +1,69 @@
+################################################################################
+## package name: zoomgrid
+## author: Yukai Yang
+## Statistiska Inst., Uppsala Universitet
+## Dec 2018
+#################################################################################
+
+
+#' zoomgrid: a package implementing the grid search algorithm with a zoom.
+#'
+#' The package implements the grid search algorithm with a zoom.
+#'
+#' The grid search aims to help solving difficult optimization problem where there are many local optimizers
+#' inside the domain of the target function or the parameter space of the log-likelihood function.
+#' It offers suitable initial or starting value for the following optimization procedure
+#' provided that the global optimum exists in the neighbourhood of the initial or starting value.
+#' And therefore the grid search does not do optimization.
+#' But if the grid is fine enough, the result approximates the optimizer.
+#'
+#' The grid search algorithm consists of two steps:
+#'
+#' -- firstly, it builds a grid with many points which discretize the domain of the target function;
+#'
+#' -- secondly, it evaluates the target function at these points in the grid and find the point
+#' which produces the smallest (minimization) or largest (maximization) function value.
+#'
+#' A fine grid is needed in order for a satisfactory result
+#' (initial or starting value of the following optimization, or an approximation of the optimizer).
+#' For cases with multiple (high-dimensional) arguments,
+#' the grid may contain too many points to evaluate the target function within a reasonably short time period.
+#' Thus, a grid search algorithm with a zoom is implemented as an option in the package.
+#'
+#' The grid search algorithm with a zoom does not require a very find grid, but a grid with a zoom-in mechanism.
+#' Based on the algorithm introduced above, the user of the package can choose to zoom in around the neighbourhoods the first \eqn{n}
+#' smallest (minimization) or largest (maximization) points obtained from the first round grid search.
+#' A much finer grid will be built in the neighbourhoods these points, and the grid search will continue.
+#'
+#' The grid search with a zoom stops after \eqn{k} rounds and gives a final result.
+#' The result is equivalent to that from a grid search based on (one round) a very fine grid,
+#' if the true global optimum is in the neighbourhoods of the \eqn{n} points from the first round grid search.
+#' By doing so, the grid search algorithm with a zoom saves time tremendously in cases with high-dimenstional arguments.
+#'
+#' Note that the user specifies \eqn{n} and \eqn{k} beforehand.
+#'
+#' Parallel computation, which requires the \code{parallel} package, is implemented and is an option in the package.
+#'
+#' @section Author and Maintainer:
+#' Yukai Yang
+#'
+#' Department of Statistics, Uppsala University
+#'
+#' \email{yukai.yang@@statistik.uu.se}
+#'
+#' @section References:
+#' Yang, Yukai (2012, 1.5.4) "\href{https://pure.au.dk/ws/files/45638557/Yukai_Yang_PhD_Thesis.pdf}{Modelling Nonlinear Vector Economic Time Series}", PhD thesis, Aarhus University, Department of economics and business and CREATES.
+#'
+#' @section functions in the package:
+#' \code{\link{build_grid}} build the grid for the following grid search algorithm.
+#'
+#' \code{\link{grid_search_check}} check the time consumed by running the grid search algorithm with a zoom.
+#'
+#' \code{\link{grid_search}} conduct the grid search algorithm with a zoom.
+#'
+#' @docType package
+#' @name zoomgrid
+NULL
+
+#' @importFrom parallel mcmapply detectCores
+NULL
