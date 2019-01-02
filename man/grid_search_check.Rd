@@ -46,7 +46,6 @@ The boolean \code{silent} controls if there will be output in the console.
 For details, see \code{\link{grid_search}}.
 }
 \examples{
-\donttest{
 # Rastrigin function
 ndim = 2 # number of dimension
 nA = 10 # parameter A
@@ -56,6 +55,18 @@ nA = 10 # parameter A
 # minimum = 0
 Rastrigin <- function(vx) return(nA * ndim + sum(vx*vx - nA * cos(2*pi*vx)))
 
+# a toy example
+# build the grid first
+bin = c(from=-5.12, to=5.12, by=.5)
+grid = build_grid(bin,bin)
+# so this is a relatively sparse grid
+
+# serial computation
+ret0 = grid_search(Rastrigin, grid, silent=FALSE)
+ret0$par
+
+\donttest{
+# If we expand the grid to allow for more points
 bin = c(from=-5.12, to=5.12, by=.1)
 grid = build_grid(bin,bin)
 

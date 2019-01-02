@@ -191,7 +191,6 @@ build_grid <- function(...){
 #' @keywords algorithms
 #'
 #' @examples
-#' \donttest{
 #' # Rastrigin function
 #' ndim = 2 # number of dimension
 #' nA = 10 # parameter A
@@ -201,6 +200,7 @@ build_grid <- function(...){
 #' # minimum = 0
 #' Rastrigin <- function(vx) return(nA * ndim + sum(vx*vx - nA * cos(2*pi*vx)))
 #'
+#' \donttest{
 #' # set seed and initialize the initial or starting value
 #' set.seed(1)
 #' par = runif(ndim, -5.12, 5.12)
@@ -211,8 +211,21 @@ build_grid <- function(...){
 #' optim(par = par, Rastrigin, method='BFGS')
 #' optim(par = par, Rastrigin, method='L-BFGS-B')
 #' optim(par = par, Rastrigin, method='SANN')
+#' }
 #'
-#' # build the grid
+#' # a toy example
+#' # build the grid first
+#' bin = c(from=-5.12, to=5.12, by=.5)
+#' grid = build_grid(bin,bin)
+#' # so this is a relatively sparse grid
+#'
+#' # serial computation
+#' ret0 = grid_search(Rastrigin, grid, silent=FALSE)
+#' ret0$par
+#'
+#' \donttest{
+#'
+#' # We can build a finer grid
 #' bin = c(from=-5.12, to=5.12, by=.1)
 #' grid = build_grid(bin,bin)
 #'
@@ -306,7 +319,6 @@ grid_search <- function(FUN, grid, MoreArgs=NULL, zoom=0, decay=0.5, num=1, para
 #' @keywords algorithms
 #'
 #' @examples
-#' \donttest{
 #' # Rastrigin function
 #' ndim = 2 # number of dimension
 #' nA = 10 # parameter A
@@ -316,6 +328,18 @@ grid_search <- function(FUN, grid, MoreArgs=NULL, zoom=0, decay=0.5, num=1, para
 #' # minimum = 0
 #' Rastrigin <- function(vx) return(nA * ndim + sum(vx*vx - nA * cos(2*pi*vx)))
 #'
+#' # a toy example
+#' # build the grid first
+#' bin = c(from=-5.12, to=5.12, by=.5)
+#' grid = build_grid(bin,bin)
+#' # so this is a relatively sparse grid
+#'
+#' # serial computation
+#' ret0 = grid_search(Rastrigin, grid, silent=FALSE)
+#' ret0$par
+#'
+#' \donttest{
+#' # If we expand the grid to allow for more points
 #' bin = c(from=-5.12, to=5.12, by=.1)
 #' grid = build_grid(bin,bin)
 #'
