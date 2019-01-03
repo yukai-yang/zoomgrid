@@ -2,7 +2,13 @@
 zoomgrid version 1.0.0 (Red Grid)
 =================================
 
+[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/zoomgrid?color=green)](https://cran.r-project.org/package=zoomgrid) ![](http://cranlogs.r-pkg.org/badges/grand-total/zoomgrid?color=green) ![](http://cranlogs.r-pkg.org/badges/zoomgrid?color=green) ![](http://cranlogs.r-pkg.org/badges/last-week/zoomgrid?color=green)
+
 The package implements provides the grid search algorithm with a zoom. The grid search algorithm with a zoom aims to help solving difficult optimization problem where there are many local optimizers inside the domain of the target function. It offers suitable initial or starting value for the following optimization procedure, provided that the global optimum exists in the neighbourhood of the initial or starting value. The grid search algorithm with a zoom saves time tremendously in cases with high-dimenstional arguments.
+
+You can also find the package on CRAN, see
+
+[zoomgrid@CRAN](https://CRAN.R-project.org/package=zoomgrid)
 
 and the corresponding paper
 
@@ -13,7 +19,13 @@ See section 1.5.4.
 How to install
 --------------
 
-You can install the development version from GitHub
+You can either install the stable version from CRAN
+
+``` r
+install.packages("zoomgrid")
+```
+
+or install the development version from GitHub
 
 ``` r
 devtools::install_github("yukai-yang/zoomgrid")
@@ -121,7 +133,7 @@ ret1 = grid_search(Rastrigin, grid, silent=FALSE)
 #> The minimizer is believed to be in the neighbourhood of -0.02 -0.02.
 #> ---------------------------------------------------------------------------
 #>    user  system elapsed 
-#>   8.657   0.038   8.736 
+#>   8.621   0.039   8.713 
 #> ###########################################################################
 ret1$par
 #> [1] -0.02 -0.02
@@ -140,7 +152,7 @@ ret2 = grid_search(Rastrigin, grid, num=2, parallel=TRUE, silent=FALSE)
 #> The minimizer is believed to be in the neighbourhood of -0.02 -0.02.
 #> ---------------------------------------------------------------------------
 #>    user  system elapsed 
-#>  14.756   0.411   4.388 
+#>  14.504   0.437   4.159 
 #> ###########################################################################
 ret2$par
 #> [1] -0.02 -0.02
@@ -159,7 +171,7 @@ ret3 = grid_search(Rastrigin, grid, zoom=2, num=2, parallel=TRUE, silent=FALSE)
 #> The minimizer is believed to be in the neighbourhood of 5.590496e-05 5.590496e-05.
 #> ---------------------------------------------------------------------------
 #>    user  system elapsed 
-#>  28.015   1.845   8.584 
+#>  27.881   1.945   9.325 
 #> ###########################################################################
 ret3$par
 #> [1] 5.590496e-05 5.590496e-05
@@ -173,7 +185,7 @@ ret3 = grid_search_check(Rastrigin, grid, zoom=2, num=2, parallel=TRUE, silent=F
 #> zoomgrid version 1.0.0 (Red Grid)
 #> ---------------------------------------------------------------------------
 #> Parallel computation runs with 4 cores.
-#> The expected time consumed by running the grid search is around 9.187375 seconds.
+#> The expected time consumed by running the grid search is around 9.557705 seconds.
 #> ###########################################################################
 ret3 = grid_search(Rastrigin, grid, zoom=2, num=2, parallel=TRUE, silent=FALSE)
 #> ###########################################################################
@@ -184,6 +196,6 @@ ret3 = grid_search(Rastrigin, grid, zoom=2, num=2, parallel=TRUE, silent=FALSE)
 #> The minimizer is believed to be in the neighbourhood of 5.590496e-05 5.590496e-05.
 #> ---------------------------------------------------------------------------
 #>    user  system elapsed 
-#>  26.418   1.421   7.796 
+#>  26.975   1.591  10.203 
 #> ###########################################################################
 ```
