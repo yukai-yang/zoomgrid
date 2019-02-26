@@ -4,7 +4,7 @@ zoomgrid version 1.0.0 (Red Grid)
 
 [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/zoomgrid?color=green)](https://cran.r-project.org/package=zoomgrid) ![](http://cranlogs.r-pkg.org/badges/grand-total/zoomgrid?color=green) ![](http://cranlogs.r-pkg.org/badges/zoomgrid?color=green) ![](http://cranlogs.r-pkg.org/badges/last-week/zoomgrid?color=green)
 
-The package implements provides the grid search algorithm with a zoom. The grid search algorithm with a zoom aims to help solving difficult optimization problem where there are many local optimizers inside the domain of the target function. It offers suitable initial or starting value for the following optimization procedure, provided that the global optimum exists in the neighbourhood of the initial or starting value. The grid search algorithm with a zoom saves time tremendously in cases with high-dimenstional arguments.
+The package implements the grid search algorithm with a zoom. The grid search algorithm with a zoom aims to help solving difficult optimization problem where there are many local optimizers inside the domain of the target function. It offers suitable initial or starting value for the following optimization procedure, provided that the global optimum exists in the neighbourhood of the initial or starting value. The grid search algorithm with a zoom saves time tremendously in cases with high-dimenstional arguments.
 
 You can also find the package on CRAN, see
 
