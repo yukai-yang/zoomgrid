@@ -243,46 +243,68 @@ build_grid <- function(...){
 #' }
 #'
 #' @export
-grid_search <- function(FUN, grid, MoreArgs=NULL, zoom=0, decay=0.5, num=1, parallel=FALSE, cores=NULL, silent=TRUE){
-  if(class(grid)!="GRID")
+grid_search <- function(FUN, grid, MoreArgs=NULL, zoom=0, decay=0.5, num=1,
+                        parallel=FALSE, cores=NULL, silent=TRUE){
+  
+  if (class(grid) != "GRID")
     stop(simpleError("The argument 'grid' is not an object of class 'GRID'."))
-
-  if(!silent){
-    cat0(paste0(rep("#",getOption("width")),collapse=''))
-    cat0("zoomgrid version ",vnum," ",packname)
-    cat0(paste0(rep("-",getOption("width")),collapse=''))
+  
+  if (!silent) {
+    cat0(paste0(rep("#", getOption("width")), collapse = ""))
+    cat0("zoomgrid version ", vnum, " ", packname)
+    cat0(paste0(rep("-", getOption("width")), collapse = ""))
   }
-
-  # tmp = split(grid$grid, seq_len(grid$size))
-
-  if(is.null(cores)){
-    cores = parallel::detectCores()
-    if(is.na(cores)){
-      if(!silent) cat0("No cores are detected! Anyway, let's use one core...")
-      parallel=FALSE
+  
+  # Decide evaluation function and (optionally) configure futures once at the top level
+  if (parallel) {
+    
+    # Ensure optional parallel backend is available (future is in Suggests)
+    if (!requireNamespace("future", quietly = TRUE) ||
+        !requireNamespace("future.apply", quietly = TRUE)) {
+      stop("Parallel execution requires packages 'future' and 'future.apply'.")
     }
+    
+    # Validate number of workers
+    if (is.null(cores) || !is.numeric(cores) || length(cores) != 1 ||
+        is.na(cores) || cores < 1) {
+      cores <- 1L
+    } else {
+      cores <- as.integer(cores)
+    }
+    
+    # Set multisession workers once and restore user's plan on exit
+    old_plan <- future::plan()
+    on.exit(future::plan(old_plan), add = TRUE)
+    future::plan(future::multisession, workers = cores)
+    
+    ftmp <- grid_peval
+    if (!silent) cat0("Parallel computation runs with ", cores, " workers.")
+  } else {
+    
+    ftmp <- grid_seval
   }
-
-  if(parallel){
-    ftmp = grid_peval
-    if(!silent) cat0("Parallel computation runs with ",cores," cores.")
-  }else ftmp = grid_seval
-
-  if(!silent) ptm = proc.time()
-
-  ret = recursive_search(ftmp=ftmp,FUN=FUN,grid=grid,MoreArgs=MoreArgs,zoom=zoom,decay=decay,num=num,cores=cores)
-
-  if(!silent) cat0("The Grid Search of ",zoom," zoom-in layers with ",num," points each gives ",length(ret), " results.")
-  par = ftmp(FUN=FUN,grid=ret,MoreArgs=MoreArgs,num=1,cores=cores)[[1]]
-  if(!silent) cat0("The minimizer is believed to be in the neighbourhood of ",par,".")
-
-  if(!silent){
-    cat0(paste0(rep("-",getOption("width")),collapse=''))
+  
+  if (!silent) ptm <- proc.time()
+  
+  ret <- recursive_search(
+    ftmp = ftmp, FUN = FUN, grid = grid, MoreArgs = MoreArgs,
+    zoom = zoom, decay = decay, num = num, cores = cores
+  )
+  
+  if (!silent) cat0("The Grid Search of ", zoom, " zoom-in layers with ", num,
+                    " points each gives ", length(ret), " results.")
+  
+  par <- ftmp(FUN = FUN, grid = ret, MoreArgs = MoreArgs, num = 1, cores = cores)[[1]]
+  
+  if (!silent) cat0("The minimizer is believed to be in the neighbourhood of ", par, ".")
+  
+  if (!silent) {
+    cat0(paste0(rep("-", getOption("width")), collapse = ""))
     print(proc.time() - ptm)
-    cat0(paste0(rep("#",getOption("width")),collapse=''))
+    cat0(paste0(rep("#", getOption("width")), collapse = ""))
   }
-
-  return(list(par=par, points=ret))
+  
+  return(list(par = par, points = ret))
 }
 
 

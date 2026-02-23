@@ -62,6 +62,3 @@
 #'
 #' @keywords internal
 "_PACKAGE"
-
-#' @importFrom parallel mcmapply detectCores
-NULL
