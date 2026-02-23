@@ -22,14 +22,20 @@ previous CRAN checks and to improve overall stability and compliance.
      and are only required when parallel = TRUE.
    - Worker selection uses future::availableCores().
 
-3. Bug fixes
+3. Bug fixes and stability improvements
 
    - Fixed a potential boundary indexing issue in build_subgrids().
    - Improved input validation for parallel and cores arguments.
    - Removed unintended modification of RNG state in
      grid_search_check().
 
-4. Documentation updates
+4. Console output
+
+   - Improved progress reporting in grid_search() and
+     grid_search_check() when silent = FALSE.
+   - Added structured CLI-style output for clearer runtime information.
+
+5. Documentation updates
 
    - Updated package-level documentation to reflect the new
      parallel backend.
