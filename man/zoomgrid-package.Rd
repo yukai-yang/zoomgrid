@@ -4,66 +4,62 @@
 \name{zoomgrid-package}
 \alias{zoomgrid}
 \alias{zoomgrid-package}
-\title{zoomgrid: a package implementing the grid search algorithm with a zoom.}
+\title{zoomgrid: grid search with zoom-in layers}
 \description{
-The package implements the grid search algorithm with a zoom.
+The \pkg{zoomgrid} package implements a grid search algorithm with optional zoom-in layers.
+The method is intended for objective functions with multiple local optima, where standard
+optimisation routines may be sensitive to initial values.
 }
 \details{
-The grid search aims to help solving difficult optimization problem where there are many local optimizers
-inside the domain of the target function or the parameter space of the log-likelihood function.
-It offers suitable initial or starting value for the following optimization procedure
-provided that the global optimum exists in the neighbourhood of the initial or starting value.
-And therefore the grid search does not do optimization.
-But if the grid is fine enough, the result approximates the optimizer.
+\strong{Core idea.} A standard grid search proceeds as follows:
+\enumerate{
+  \item Construct a grid of candidate points over a bounded parameter domain.
+  \item Evaluate the objective function at each grid point.
+  \item Return the best point(s) found on the grid (for minimisation or maximisation).
+}
 
-The grid search algorithm consists of two steps:
+A sufficiently fine grid may yield a good approximation to the global optimum, but the number
+of grid points grows quickly with dimension, making exhaustive evaluation expensive.
 
--- firstly, it builds a grid with many points which discretize the domain of the target function;
+\strong{Zoom-in layers.} To reduce computational cost, \pkg{zoomgrid} provides an optional
+zoom-in mechanism. After an initial grid search, the algorithm selects the best \eqn{n}
+points (controlled by \code{num}) and constructs smaller subgrids around those points.
+This procedure is repeated for \eqn{k} additional layers (controlled by \code{zoom}).
+At each layer, subgrid sizes shrink according to the decay rate \code{decay}, which allows
+the algorithm to concentrate evaluations in promising neighbourhoods while keeping the total
+number of function evaluations manageable.
 
--- secondly, it evaluates the target function at these points in the grid and find the point
-which produces the smallest (minimization) or largest (maximization) function value.
+In typical use, the method serves one of the following purposes:
+\itemize{
+  \item provide suitable initial values for subsequent optimisation,
+  \item or approximate the optimiser when a very fine one-shot grid is impractical.
+}
 
-A fine grid is needed in order for a satisfactory result
-(initial or starting value of the following optimization, or an approximation of the optimizer).
-For cases with multiple (high-dimensional) arguments,
-the grid may contain too many points to evaluate the target function within a reasonably short time period.
-Thus, a grid search algorithm with a zoom is implemented as an option in the package.
-
-The grid search algorithm with a zoom does not require a very find grid, but a grid with a zoom-in mechanism.
-Based on the algorithm introduced above, the user of the package can choose to zoom in around the neighbourhoods the first \eqn{n}
-smallest (minimization) or largest (maximization) points obtained from the first round grid search.
-A much finer grid will be built in the neighbourhoods these points, and the grid search will continue.
-
-The grid search with a zoom stops after \eqn{k} rounds and gives a final result.
-The result is equivalent to that from a grid search based on (one round) a very fine grid,
-if the true global optimum is in the neighbourhoods of the \eqn{n} points from the first round grid search.
-By doing so, the grid search algorithm with a zoom saves time tremendously in cases with high-dimenstional arguments.
-
-Note that the user specifies \eqn{n} and \eqn{k} beforehand.
-
-Parallel computation, which requires the \code{parallel} package, is implemented and is an option in the package.
+\strong{Parallel evaluation.} Function evaluations can be parallelised by setting
+\code{parallel = TRUE}. Parallel execution is implemented via the \pkg{future} framework
+using a cross-platform backend. The packages \pkg{future} and \pkg{future.apply} are listed
+under \sQuote{Suggests} and are required only when parallel execution is requested.
 }
 \section{Author and Maintainer}{
 
-Yukai Yang
+Yukai Yang \email{yukai.yang@statistik.uu.se}
 
-Department of Statistics, Uppsala University
-
-\email{yukai.yang@statistik.uu.se}
+Department of Statistics, Uppsala University.
 }
 
 \section{References}{
 
-Yang, Yukai (2012, 1.5.4) "\href{https://pure.au.dk/ws/files/45638557/Yukai_Yang_PhD_Thesis.pdf}{Modelling Nonlinear Vector Economic Time Series}", PhD thesis, Aarhus University, Department of economics and business and CREATES.
+Yang, Y. (2012). \emph{Modelling Nonlinear Vector Economic Time Series}. PhD thesis,
+Aarhus University, Department of Economics and Business and CREATES. See Section 1.5.4.
 }
 
-\section{functions in the package}{
+\section{Main functions}{
 
-\code{\link{build_grid}} build the grid for the following grid search algorithm.
-
-\code{\link{grid_search_check}} check the time consumed by running the grid search algorithm with a zoom.
-
-\code{\link{grid_search}} conduct the grid search algorithm with a zoom.
+\itemize{
+  \item \code{\link{build_grid}}: construct a grid over the parameter domain.
+  \item \code{\link{grid_search}}: perform grid search with optional zoom-in layers.
+  \item \code{\link{grid_search_check}}: estimate runtime under given settings.
+}
 }
 
 \seealso{

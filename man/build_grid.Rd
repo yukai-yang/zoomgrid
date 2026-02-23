@@ -21,10 +21,10 @@ The object contains the following components:
 This function builds the grid for the grid search algorithm with a zoom.
 }
 \details{
-The argument \code{...} is a sequence of vectors or lists contatining the information about the grid to be built.
+The argument \code{...} is a sequence of vectors or lists containing the information about the grid to be built.
 Each element in the sequence is either a vector or a list taking one of the following forms
 
-- \code{x}, if \code{x} is already an sequence of the grid points for the corresponding argument.
+- \code{x}, if \code{x} is already a sequence of the grid points for the corresponding argument.
 
 - \code{c(from=, to=, by=)}
 
@@ -52,7 +52,7 @@ The design that \code{x} does not need to be increasing makes it convenient for 
 to interpolate more points at some region without considering to sort it all the time.
 
 When \code{by} is provided, the \code{length} will be ignored.
-So if the user wanna specify the \code{length}, please do not use \code{by}.
+So if the user want to specify the \code{length}, please do not use \code{by}.
 
 The order of the sequence \code{...} matters as it represents the order of the corresponding arguments of the target function to be optimized.
 }

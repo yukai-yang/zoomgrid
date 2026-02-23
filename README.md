@@ -9,14 +9,14 @@
 [![License: GPL
 v3](https://img.shields.io/badge/License-GPLv3-green.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
-The package implements provides the grid search algorithm with a zoom.
-The grid search algorithm with a zoom aims to help solving difficult
-optimization problem where there are many local optimisers inside the
-domain of the target function. It offers suitable initial or starting
-value for the following optimization procedure, provided that the global
-optimum exists in the neighbourhood of the initial or starting value.
-The grid search algorithm with a zoom saves time tremendously in cases
-with high-dimensional arguments.
+The package implements the grid search algorithm with a zoom. The grid
+search algorithm with a zoom aims to help solving difficult optimization
+problem where there are many local optimisers inside the domain of the
+target function. It offers suitable initial or starting value for the
+following optimization procedure, provided that the global optimum
+exists in the neighbourhood of the initial or starting value. The grid
+search algorithm with a zoom saves time tremendously in cases with
+high-dimensional arguments.
 
 You can also find the package on CRAN, see
 
@@ -58,20 +58,19 @@ You can take a look at all the available functions and data in the
 package
 
 ``` r
-ls( grep("zoomgrid", search()) ) 
+ls("package:zoomgrid")
 #> [1] "build_grid"        "grid_search"       "grid_search_check"
 ```
 
 ### Motivation
 
-Consider the two-dimensional **Rastrigin function** is a non-convex
-function which is widely used for testing the performances of some
-optimization algorithms
+Consider the two-dimensional **Rastrigin function**, which is a
+non-convex function widely used for testing optimisation algorithms.
 
 ![](figures/gif.latex.gif)
 
 where *x*<sub>*i*</sub> ∈ \[−5.12, 5.12\] and *A* = 10. It has many
-local minimum and its global minimum is at (0, 0) with the minimum value
+local minima and its global minimum is at (0, 0) with the minimum value
 0.
 
 <figure>
@@ -159,13 +158,14 @@ ret1 = grid_search(Rastrigin, grid, silent=FALSE)
 #> The minimizer is believed to be in the neighbourhood of -0.02 -0.02.
 #> --------------------------------------------------------------------------------
 #>    user  system elapsed 
-#>   3.722   0.007   3.730 
+#>   3.835   0.017   3.858 
 #> ################################################################################
 ret1$par
 #> [1] -0.02 -0.02
 ```
 
-Then we run the parallel one
+Then we run the parallel one. Parallel execution uses the future
+framework and works on all major platforms including Windows.
 
 ``` r
 # parallel computation
@@ -173,12 +173,12 @@ ret2 = grid_search(Rastrigin, grid, num=2, parallel=TRUE, silent=FALSE)
 #> ################################################################################
 #> zoomgrid version 1.0.0 (Red Grid)
 #> --------------------------------------------------------------------------------
-#> Parallel computation runs with 8 cores.
+#> Parallel computation runs with 2 workers.
 #> The Grid Search of 0 zoom-in layers with 2 points each gives 2 results.
 #> The minimizer is believed to be in the neighbourhood of -0.02 -0.02.
 #> --------------------------------------------------------------------------------
 #>    user  system elapsed 
-#>   5.835   0.247   1.057 
+#>   0.614   0.014   2.661 
 #> ################################################################################
 ret2$par
 #> [1] -0.02 -0.02
@@ -192,12 +192,12 @@ ret3 = grid_search(Rastrigin, grid, zoom=2, num=2, parallel=TRUE, silent=FALSE)
 #> ################################################################################
 #> zoomgrid version 1.0.0 (Red Grid)
 #> --------------------------------------------------------------------------------
-#> Parallel computation runs with 8 cores.
+#> Parallel computation runs with 2 workers.
 #> The Grid Search of 2 zoom-in layers with 2 points each gives 14 results.
 #> The minimizer is believed to be in the neighbourhood of 5.590496e-05 5.590496e-05.
 #> --------------------------------------------------------------------------------
 #>    user  system elapsed 
-#>  11.808   1.452   2.394 
+#>   1.324   0.043   4.987 
 #> ################################################################################
 ret3$par
 #> [1] 5.590496e-05 5.590496e-05
@@ -206,7 +206,7 @@ ret3$par
 Sometimes it is strongly recommended to check the time consumed by
 running the grid search first. This is extremely useful when the user is
 going to run on some super-computing server and need to know
-approximately how long time it will take in order to specify the
+approximately how long it will take in order to specify the
 corresponding settings according to some batch system like SLURM for
 example. So you can do as follows
 
@@ -215,18 +215,18 @@ ret3 = grid_search_check(Rastrigin, grid, zoom=2, num=2, parallel=TRUE, silent=F
 #> ################################################################################
 #> zoomgrid version 1.0.0 (Red Grid)
 #> --------------------------------------------------------------------------------
-#> Parallel computation runs with 8 cores.
-#> The expected time consumed by running the grid search is around 2.429071 seconds.
+#> Parallel computation runs with 2 workers.
+#> The expected time consumed by running the grid search is around 4.686098 seconds.
 #> ################################################################################
 ret3 = grid_search(Rastrigin, grid, zoom=2, num=2, parallel=TRUE, silent=FALSE)
 #> ################################################################################
 #> zoomgrid version 1.0.0 (Red Grid)
 #> --------------------------------------------------------------------------------
-#> Parallel computation runs with 8 cores.
+#> Parallel computation runs with 2 workers.
 #> The Grid Search of 2 zoom-in layers with 2 points each gives 14 results.
 #> The minimizer is believed to be in the neighbourhood of 5.590496e-05 5.590496e-05.
 #> --------------------------------------------------------------------------------
 #>    user  system elapsed 
-#>  14.516   1.697   2.929 
+#>   1.292   0.042   4.912 
 #> ################################################################################
 ```
