@@ -19,69 +19,61 @@ grid_search_check(
 \arguments{
 \item{FUN}{the target function to be minimized.}
 
-\item{grid}{an object of the class GRID from \code{\link{build_grid}}.}
+\item{grid}{an object of class \code{GRID} created by \code{\link{build_grid}}.}
 
-\item{MoreArgs}{a list of other arguments to \code{FUN}, see \code{\link{mapply}}.}
+\item{MoreArgs}{a named list of additional arguments to \code{FUN}, see \code{\link{mapply}}.}
 
-\item{zoom}{number of (additional) rounds or layers of the zoom-in, 0 by default.}
+\item{zoom}{number of (additional) zoom-in layers, \code{0} by default.}
 
-\item{decay}{a number in between 0 and 1 representing the decay rate of the grid sizes of the zoom.}
+\item{decay}{a number in \eqn{(0,1)} controlling the decay of subgrid sizes.}
 
-\item{num}{number of points to return, i.e. the smallest \code{num} points, 1 by default the minimum.}
+\item{num}{number of points to return at each grid search, \code{1} by default.}
 
-\item{parallel}{a boolean indicating if the parallel computation is carried out, by default \code{FALSE}.}
+\item{parallel}{a logical; if \code{TRUE}, parallel computation is used.}
 
-\item{cores}{The number of cores to use, i.e. at most how many child processes will be run simultaneously. For details, see \code{mcmapply} in \code{parallel} package.}
+\item{cores}{an integer specifying the requested number of workers when \code{parallel = TRUE}.
+If \code{NULL}, the function uses \code{2} workers by default (subject to \code{future::availableCores()}).
+The number of workers used is \code{min(cores, future::availableCores())}.}
 
-\item{silent}{a boolean indicating if the information regarding the computation is printed.}
+\item{silent}{a logical indicating whether progress information is printed.}
 }
 \value{
-a number of the time in seconds.
+a numeric value giving the estimated runtime in seconds.
 }
 \description{
-This function checks the time consumed by running the grid search algorithm with a zoom as well as some other conditions.
+This function provides a quick runtime estimate for \code{\link{grid_search}} under the same settings.
+It performs two short pilot runs on smaller grids (with \code{zoom = 0}) and extrapolates the expected
+time for the full grid and the requested number of zoom-in layers.
 }
 \details{
-The running of this function takes only several seconds.
-So it is recommended to run this function before \code{\link{grid_search}} to check the approximate time consumed
-by \code{\link{grid_search}} by using exactly the same arguments.
+This is useful before launching a large run, for example on a compute server or under a batch system
+such as SLURM, where an approximate runtime is needed to request resources.
 
-This function is extremely useful when the user is going to run \code{\link{grid_search}} on some super-computing server
-and need to know approximately how long time it will take in order to specify the corresponding settings
-according to some batch system like SLURM for example.
-
-The boolean \code{silent} controls if there will be output in the console.
-
-For details, see \code{\link{grid_search}}.
+The boolean \code{silent} controls whether progress information is printed to the console.
+For details on the algorithm and the meaning of the arguments, see \code{\link{grid_search}}.
 }
 \examples{
 # Rastrigin function
-ndim = 2 # number of dimension
-nA = 10 # parameter A
-# vx in [-5.12, 5.12]
+ndim <- 2
+nA <- 10
+Rastrigin <- function(vx) nA * ndim + sum(vx * vx - nA * cos(2 * pi * vx))
 
-# minimizer = rep(0, ndim)
-# minimum = 0
-Rastrigin <- function(vx) return(nA * ndim + sum(vx*vx - nA * cos(2*pi*vx)))
+# Build a grid
+bin <- c(from = -5.12, to = 5.12, by = .5)
+grid <- build_grid(bin, bin)
 
-# a toy example
-# build the grid first
-bin = c(from=-5.12, to=5.12, by=.5)
-grid = build_grid(bin,bin)
-# so this is a relatively sparse grid
-
-# serial computation
-ret0 = grid_search(Rastrigin, grid, silent=FALSE)
-ret0$par
+# Estimate runtime (serial)
+t_est <- grid_search_check(Rastrigin, grid, silent = FALSE)
+t_est
 
 \donttest{
-# If we expand the grid to allow for more points
-bin = c(from=-5.12, to=5.12, by=.1)
-grid = build_grid(bin,bin)
+# Finer grid
+bin <- c(from = -5.12, to = 5.12, by = .1)
+grid <- build_grid(bin, bin)
 
-# run the check before the grid search
-ret1 = grid_search_check(Rastrigin, grid, silent=FALSE)
-ret1 = grid_search(Rastrigin, grid, silent=FALSE)
+# Estimate runtime, then run the search
+t_est <- grid_search_check(Rastrigin, grid, parallel = TRUE, cores = 2, silent = FALSE)
+ret   <- grid_search(Rastrigin, grid, parallel = TRUE, cores = 2, silent = FALSE)
 }
 
 }

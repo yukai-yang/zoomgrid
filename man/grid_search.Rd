@@ -19,121 +19,98 @@ grid_search(
 \arguments{
 \item{FUN}{the target function to be minimized.}
 
-\item{grid}{an object of the class GRID from \code{\link{build_grid}}.}
+\item{grid}{an object of class \code{GRID} created by \code{\link{build_grid}}.}
 
-\item{MoreArgs}{a list of other arguments to \code{FUN}, see \code{\link{mapply}}.}
+\item{MoreArgs}{a named list of additional arguments to \code{FUN}, see \code{\link{mapply}}.}
 
-\item{zoom}{number of (additional) rounds or layers of the zoom-in, 0 by default.}
+\item{zoom}{number of (additional) zoom-in layers, \code{0} by default.}
 
-\item{decay}{a number in between 0 and 1 representing the decay rate of the grid sizes of the zoom.}
+\item{decay}{a number in \eqn{(0,1)} controlling the decay of subgrid sizes.}
 
-\item{num}{number of points to return, i.e. the smallest \code{num} points, 1 by default the minimum.}
+\item{num}{number of points to return at each grid search, \code{1} by default.}
 
-\item{parallel}{a boolean indicating if the parallel computation is carried out, by default \code{FALSE}.}
+\item{parallel}{a logical; if \code{TRUE}, parallel computation is used.}
 
-\item{cores}{The number of cores to use, i.e. at most how many child processes will be run simultaneously. For details, see \code{mcmapply} in \code{parallel} package.}
+\item{cores}{an integer specifying the requested number of workers when \code{parallel = TRUE}.
+If \code{NULL}, the function uses \code{2} workers by default (subject to \code{future::availableCores()}).}
 
-\item{silent}{a boolean indicating if the information regarding the omputation is printed.}
+\item{silent}{a logical indicating whether progress information is printed.}
 }
 \value{
-a list containing the results from the grid search with a zoom.
-
-The list contains the following components:
+a list with components:
 \item{par}{the approximate global minimizer}
-\item{points}{all the local minimizer points found by the grid search with a zoom}
+\item{points}{all candidate points found by the grid search with zoom-in layers}
 }
 \description{
 This function carries out the grid search algorithm with a zoom.
 }
 \details{
-The target function \code{FUN} to be minimized is a scalar real valued function with multiple arguments.
-The maximization can be achieved by multiplying -1 to the original function,
-and then input the new function to \code{FUN}.
+The target function \code{FUN} to be minimized is a scalar real-valued function.
+Maximization can be achieved by multiplying \code{-1} to the original function
+and then passing the new function to \code{FUN}.
 
-The \code{grid} must be created by using the function \code{\link{build_grid}} function in the package.
+The \code{grid} must be created by \code{\link{build_grid}}.
 
-Any other invariant arugments to the function \code{FUN} can be specified in \code{MoreArgs} by using a list with variable names.
+Any other invariant arguments to \code{FUN} can be specified in \code{MoreArgs}
+using a named list, see \code{\link{mapply}}.
 
-The common grid search first build a grid within some bounded area.
-And then the target function will be evaluated at each point in the grid.
-The points that produce the smallest \code{num} target function values shall be returned.
+The common grid search first builds a grid within a bounded region, evaluates \code{FUN}
+at each grid point, and returns the \code{num} points that yield the smallest values.
 
-\code{zoom = 0} implies that no zoom-in will be applied and the corresponding grid search is the common one introduced above,
-while any integer \code{zoom > 0} implies that the zoom-in will be applied in the grid search.
-When a grid search with a zoom is applied, \code{zoom > 0} is actually the number of rounds or layers of the algorithm,
-and therefore the grid search algorithm with a zoom consists of
-\deqn{ n^{0} + n^{1} + n^{2} + ... + n^{z}   }
-grid searches, where \eqn{n} = \code{num} and \eqn{z} = \code{zoom}.
+\code{zoom = 0} implies no zoom-in (a single grid search). Any integer \code{zoom > 0}
+applies additional zoom-in layers. With \code{zoom > 0}, the algorithm performs
+\deqn{ n^{0} + n^{1} + n^{2} + \cdots + n^{z} }
+grid searches, where \eqn{n} is \code{num} and \eqn{z} is \code{zoom}.
+Consequently, the total number of returned points is
+\deqn{ n^{1} + n^{2} + n^{3} + \cdots + n^{z+1} }.
 
-As mentioned above, in each grid search, \code{num} is the number of points that will be returned.
-And therefore, in the end, there will be
-\deqn{ n^{1} + n^{2} + n^{3} + ... + n^{z+1}   }
-points returned, where \eqn{n} = \code{num} and \eqn{z} = \code{zoom}.
+At each zoom-in layer, the algorithm builds subgrids around the best points found
+in the previous layer. To limit the computational burden, the subgrid size is reduced
+by the decay rate \code{decay}. For each parameter, the number of points in the subgrid is
+\code{max(Int(decay * N), 3)}, where \code{N} is the number of points in the original grid
+for that parameter.
 
-Each time when the algorithm zooms in, it will automatically build subgrids
-based on the points that have been found in the super gird search.
-Due to the exhaustive property of the grid search algorithm,
-it is desirable to make fewer points in the subgrid.
-The decay rate \code{decay} provides the opportunity to control the number of points in the subgrids.
-The number of points for each argument of the target function in the subgrid will be
-\code{max} [ \code{Int} (\code{decay} \eqn{*} \eqn{N}), 3 ].
+Parallel computation can be enabled by setting \code{parallel = TRUE}. In that case,
+the function uses the \pkg{future} framework with \code{future::multisession}
+(cross-platform). The number of workers is determined as follows:
+\enumerate{
+  \item Let \eqn{n} be the value returned by \code{future::availableCores()}.
+  \item Let \eqn{m} be the user input \code{cores}. If \code{cores = NULL}, set \eqn{m = 2}.
+  \item The number of workers is \eqn{\min(m, n)}.
+}
+If \code{parallel = TRUE}, the packages \pkg{future} and \pkg{future.apply} must be installed.
 
-Parallel computation is implemented in the function, which can be activated by setting \code{parallel = TRUE}.
-
-\code{cores}, which represents the number of cores, works only when \code{parallel = TRUE}.
-By default \code{cores=NULL} implies that the function will detect the number of cores and use it.
-
-The boolean \code{silent} controls if there will be output in the console.
+The boolean \code{silent} controls whether progress information is printed to the console.
 }
 \examples{
 # Rastrigin function
-ndim = 2 # number of dimension
-nA = 10 # parameter A
-# vx in [-5.12, 5.12]
+ndim = 2
+nA = 10
+Rastrigin <- function(vx) nA * ndim + sum(vx * vx - nA * cos(2 * pi * vx))
 
-# minimizer = rep(0, ndim)
-# minimum = 0
-Rastrigin <- function(vx) return(nA * ndim + sum(vx*vx - nA * cos(2*pi*vx)))
+# Build a grid
+bin = c(from = -5.12, to = 5.12, by = .5)
+grid = build_grid(bin, bin)
 
-\donttest{
-# set seed and initialize the initial or starting value
-set.seed(1)
-par = runif(ndim, -5.12, 5.12)
-cat("start from", par)
-
-# results from different optimization algorithms
-optim(par = par, Rastrigin, method='Nelder-Mead')
-optim(par = par, Rastrigin, method='BFGS')
-optim(par = par, Rastrigin, method='L-BFGS-B')
-optim(par = par, Rastrigin, method='SANN')
-}
-
-# a toy example
-# build the grid first
-bin = c(from=-5.12, to=5.12, by=.5)
-grid = build_grid(bin,bin)
-# so this is a relatively sparse grid
-
-# serial computation
-ret0 = grid_search(Rastrigin, grid, silent=FALSE)
+# Serial computation
+ret0 = grid_search(Rastrigin, grid, silent = FALSE)
 ret0$par
 
 \donttest{
+# Finer grid
+bin = c(from = -5.12, to = 5.12, by = .1)
+grid = build_grid(bin, bin)
 
-# We can build a finer grid
-bin = c(from=-5.12, to=5.12, by=.1)
-grid = build_grid(bin,bin)
-
-# serial computation
-ret1 = grid_search(Rastrigin, grid, silent=FALSE)
+# Serial computation
+ret1 = grid_search(Rastrigin, grid, silent = FALSE)
 ret1$par
 
-# parallel computation
-ret2 = grid_search(Rastrigin, grid, num=2, parallel=TRUE, silent=FALSE)
+# Parallel computation (requires future and future.apply)
+ret2 = grid_search(Rastrigin, grid, num = 2, parallel = TRUE, cores = 2, silent = FALSE)
 ret2$par
 
-# grid search with a zoom!
-ret3 = grid_search(Rastrigin, grid, zoom=2, num=2, parallel=TRUE, silent=FALSE)
+# Grid search with zoom-in layers
+ret3 = grid_search(Rastrigin, grid, zoom = 2, num = 2, parallel = TRUE, cores = 2, silent = FALSE)
 ret3$par
 }
 

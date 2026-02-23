@@ -3,5 +3,3 @@
 export(build_grid)
 export(grid_search)
 export(grid_search_check)
-importFrom(parallel,detectCores)
-importFrom(parallel,mcmapply)

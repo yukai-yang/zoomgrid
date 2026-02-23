@@ -60,29 +60,56 @@ grid_peval <- function(FUN, grid, MoreArgs, num, cores){
 }
 
 
-build_subgrids <- function(mins, grid_base, decay=.5){
-  ret = list()
-  nbin = pmax(sapply(grid_base, length)*decay, 3)
-
-  for(jter in seq_along(mins)){
-    tmp = list()
-    tmp_base = list(); length(tmp_base) = length(grid_base)
-
-    for(iter in seq_along(grid_base)){
-      index = which(mins[[jter]][iter] == grid_base[[iter]])
-      tmp_base[[iter]] = seq(from=grid_base[[iter]][index-1],to=grid_base[[iter]][index+1],
-                             length.out=nbin[iter]+2)[2:(nbin[iter]+1)]
+build_subgrids <- function(mins, grid_base, decay = 0.5) {
+  ret <- vector("list", length(mins))
+  
+  # keep your behaviour: nbin >= 3
+  nbin <- pmax(as.integer(ceiling(vapply(grid_base, length, integer(1)) * decay)), 3L)
+  
+  for (jter in seq_along(mins)) {
+    tmp_base <- vector("list", length(grid_base))
+    
+    for (iter in seq_along(grid_base)) {
+      gb <- grid_base[[iter]]
+      
+      # Contract assumptions (internal assertions, not user-facing validation)
+      # 1) gb must have at least 3 points if we require an interior index
+      if (length(gb) < 3L) {
+        stop(sprintf("build_subgrids(): grid_base[[%d]] has length < 3; cannot form interior neighbourhood.", iter))
+      }
+      
+      # 2) mins point must match exactly one grid point
+      idx <- which(mins[[jter]][iter] == gb)
+      if (length(idx) != 1L) {
+        stop(sprintf(
+          "build_subgrids(): mins[[%d]][%d] does not match exactly one point in grid_base[[%d]] (matches=%d).",
+          jter, iter, iter, length(idx)
+        ))
+      }
+      
+      # 3) you said boundary case does not occur: assert strict interior
+      if (idx == 1L || idx == length(gb)) {
+        stop(sprintf(
+          "build_subgrids(): mins[[%d]][%d] lies on boundary of grid_base[[%d]] (index=%d).",
+          jter, iter, iter, idx
+        ))
+      }
+      
+      tmp_base[[iter]] <-
+        seq(from = gb[idx - 1L], to = gb[idx + 1L], length.out = nbin[iter] + 2L)[2:(nbin[iter] + 1L)]
     }
-
-    tmp$grid = expand.grid(tmp_base,KEEP.OUT.ATTRS=FALSE)
-    tmp$grid_base = tmp_base
-    tmp$size = nrow(tmp$grid)
-    tmp$npar = length(tmp_base)
-    class(tmp) = "GRID"
-    ret[[jter]] = tmp
+    
+    tmp <- list()
+    tmp$grid <- expand.grid(tmp_base, KEEP.OUT.ATTRS = FALSE)
+    tmp$grid_base <- tmp_base
+    tmp$size <- nrow(tmp$grid)
+    tmp$npar <- length(tmp_base)
+    class(tmp) <- "GRID"
+    
+    ret[[jter]] <- tmp
   }
-
-  return(ret)
+  
+  ret
 }
 
 
