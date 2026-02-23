@@ -30,16 +30,32 @@ grid_seval <- function(FUN, grid, MoreArgs, num, ...){
 
 
 grid_peval <- function(FUN, grid, MoreArgs, num, cores){
-  tmp = parallel::mcmapply(FUN=FUN, grid, MoreArgs=MoreArgs, mc.cores=cores)
-
-  mins = list(); length(mins) = num
-  tmax = max(tmp)
-  for(nter in seq_len(num)){
-    index = which.min(tmp)
-    mins[[nter]] = as.numeric(grid[[index]])
-    tmp[index] = tmax
+  
+  # Parallel evaluation over a list of grid points using the current future plan
+  tmp <- future.apply::future_lapply(
+    grid,
+    function(par_vec) {
+      if (is.null(MoreArgs)) {
+        FUN(par_vec)
+      } else {
+        do.call(FUN, c(list(par_vec), MoreArgs))
+      }
+    },
+    future.seed = TRUE
+  )
+  
+  tmp <- unlist(tmp, use.names = FALSE)
+  
+  # Select the smallest 'num' values
+  mins <- vector("list", num)
+  tmax <- max(tmp)
+  
+  for (nter in seq_len(num)) {
+    index <- which.min(tmp)
+    mins[[nter]] <- as.numeric(grid[[index]])
+    tmp[index] <- tmax
   }
-
+  
   return(mins)
 }
 
