@@ -442,9 +442,32 @@ grid_search_check <- function(FUN, grid, MoreArgs=NULL, zoom=0, decay=0.5, num=1
   nn2 <- new_grid$size / cores
   
   # forecast the time
-  tmp <- solve(matrix(c(nn1, nn2, 1, 1), 2, 2), c(tx1, tx2))
-  rr <- tmp[1]
-  aa <- tmp[2]
+  # forecast the time (robust)
+  y <- c(tx1, tx2)
+  x <- c(nn1, nn2)
+  
+  rr <- NA_real_
+  aa <- NA_real_
+  
+  if (isTRUE(all.equal(x[1], x[2]))) {
+    # Degenerate case: both timing runs used the same number of evaluations
+    # Estimate per-evaluation cost and treat intercept as zero (or very small)
+    if (x[1] <= 0) {
+      rr <- 0
+      aa <- max(y, 0)
+    } else {
+      rr <- max(mean(y) / x[1], 0)
+      aa <- 0
+    }
+  } else {
+    # Two-point line fit: time = rr * nn + aa
+    rr <- (y[2] - y[1]) / (x[2] - x[1])
+    aa <- y[1] - rr * x[1]
+    
+    # Guard against numerical oddities
+    if (!is.finite(rr) || rr < 0) rr <- max(mean(y) / max(mean(x), 1), 0)
+    if (!is.finite(aa) || aa < 0) aa <- 0
+  }
   nn <- grid$size / cores
   
   tmp <- 0:zoom

@@ -30,7 +30,7 @@
 - Safer recursive evaluation flow in grid_search().
 - Improved argument validation for cores and parallel options.
 
-# New Featurs in zoomgrid 1.0.0
+# New Features in zoomgrid 1.0.0
 
 - All the functions
 - Documentation including README, LICENSE and etc.
