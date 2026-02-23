@@ -14,8 +14,9 @@ Encoding: UTF-8
 RoxygenNote: 7.3.3
 URL: https://github.com/yukai-yang/zoomgrid
 BugReports: https://github.com/yukai-yang/zoomgrid/issues
-Imports: 
-    parallel
+Imports:
+    future,
+    future.apply
 Suggests: 
     knitr,
     rmarkdown
