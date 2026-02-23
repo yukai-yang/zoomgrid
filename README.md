@@ -151,15 +151,12 @@ We can first try the sequential (no parallel) grid search
 ``` r
 # serial computation
 ret1 = grid_search(Rastrigin, grid, silent=FALSE)
-#> ################################################################################
-#> zoomgrid version 1.0.0 (Red Grid)
-#> --------------------------------------------------------------------------------
-#> The Grid Search of 0 zoom-in layers with 1 points each gives 1 results.
-#> The minimizer is believed to be in the neighbourhood of -0.02 -0.02.
-#> --------------------------------------------------------------------------------
-#>    user  system elapsed 
-#>   3.689   0.016   3.706 
-#> ################################################################################
+#> 
+#> ── zoomgrid version 1.1.0 (Red Grid) ───────────────────────────────────────────
+#> ✔ Grid search with 0 zoom-in layers and 1 point each produced 1 result.
+#> The minimiser is believed to be in the neighbourhood of -0.0199999999999996 and
+#> -0.0199999999999996.
+#> ℹ Elapsed: 3.717s (user: 3.701s, system: 0.015s).
 ret1$par
 #> [1] -0.02 -0.02
 ```
@@ -170,16 +167,13 @@ framework and works on all major platforms including Windows.
 ``` r
 # parallel computation
 ret2 = grid_search(Rastrigin, grid, num=2, parallel=TRUE, silent=FALSE)
-#> ################################################################################
-#> zoomgrid version 1.0.0 (Red Grid)
-#> --------------------------------------------------------------------------------
-#> Parallel computation runs with 2 workers.
-#> The Grid Search of 0 zoom-in layers with 2 points each gives 2 results.
-#> The minimizer is believed to be in the neighbourhood of -0.02 -0.02.
-#> --------------------------------------------------------------------------------
-#>    user  system elapsed 
-#>   0.581   0.013   2.561 
-#> ################################################################################
+#> 
+#> ── zoomgrid version 1.1.0 (Red Grid) ───────────────────────────────────────────
+#> ℹ Parallel computation runs with 2 workers.
+#> ✔ Grid search with 0 zoom-in layers and 2 points each produced 2 results.
+#> The minimiser is believed to be in the neighbourhood of -0.0199999999999996 and
+#> -0.0199999999999996.
+#> ℹ Elapsed: 2.578s (user: 0.598s, system: 0.013s).
 ret2$par
 #> [1] -0.02 -0.02
 ```
@@ -189,16 +183,13 @@ Try the grid search with a zoom!
 ``` r
 # grid search with a zoom!
 ret3 = grid_search(Rastrigin, grid, zoom=2, num=2, parallel=TRUE, silent=FALSE)
-#> ################################################################################
-#> zoomgrid version 1.0.0 (Red Grid)
-#> --------------------------------------------------------------------------------
-#> Parallel computation runs with 2 workers.
-#> The Grid Search of 2 zoom-in layers with 2 points each gives 14 results.
-#> The minimizer is believed to be in the neighbourhood of 5.590496e-05 5.590496e-05.
-#> --------------------------------------------------------------------------------
-#>    user  system elapsed 
-#>   1.281   0.041   4.887 
-#> ################################################################################
+#> 
+#> ── zoomgrid version 1.1.0 (Red Grid) ───────────────────────────────────────────
+#> ℹ Parallel computation runs with 2 workers.
+#> ✔ Grid search with 2 zoom-in layers and 2 points each produced 14 results.
+#> The minimiser is believed to be in the neighbourhood of 5.59049615653446e-05
+#> and 5.59049615653446e-05.
+#> ℹ Elapsed: 4.893s (user: 1.274s, system: 0.042s).
 ret3$par
 #> [1] 5.590496e-05 5.590496e-05
 ```
@@ -212,21 +203,16 @@ example. So you can do as follows
 
 ``` r
 ret3 = grid_search_check(Rastrigin, grid, zoom=2, num=2, parallel=TRUE, silent=FALSE)
-#> ################################################################################
-#> zoomgrid version 1.0.0 (Red Grid)
-#> --------------------------------------------------------------------------------
-#> Parallel computation runs with 2 workers.
-#> The expected time consumed by running the grid search is around 4.672098 seconds.
-#> ################################################################################
+#> 
+#> ── zoomgrid version 1.1.0 (Red Grid) ───────────────────────────────────────────
+#> ℹ Parallel computation runs with 2 workers.
+#> ℹ The expected time consumed by running the grid search is around 4.64759 seconds.
 ret3 = grid_search(Rastrigin, grid, zoom=2, num=2, parallel=TRUE, silent=FALSE)
-#> ################################################################################
-#> zoomgrid version 1.0.0 (Red Grid)
-#> --------------------------------------------------------------------------------
-#> Parallel computation runs with 2 workers.
-#> The Grid Search of 2 zoom-in layers with 2 points each gives 14 results.
-#> The minimizer is believed to be in the neighbourhood of 5.590496e-05 5.590496e-05.
-#> --------------------------------------------------------------------------------
-#>    user  system elapsed 
-#>   1.292   0.037   4.858 
-#> ################################################################################
+#> 
+#> ── zoomgrid version 1.1.0 (Red Grid) ───────────────────────────────────────────
+#> ℹ Parallel computation runs with 2 workers.
+#> ✔ Grid search with 2 zoom-in layers and 2 points each produced 14 results.
+#> The minimiser is believed to be in the neighbourhood of 5.59049615653446e-05
+#> and 5.59049615653446e-05.
+#> ℹ Elapsed: 4.941s (user: 1.342s, system: 0.043s).
 ```
