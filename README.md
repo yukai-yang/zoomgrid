@@ -7,7 +7,7 @@
 ![](http://cranlogs.r-pkg.org/badges/zoomgrid?color=green)
 ![](http://cranlogs.r-pkg.org/badges/last-week/zoomgrid?color=green)
 [![License: GPL
-v3](https://img.shields.io/badge/License-GPLv3-brightgreen.svg)](https://www.gnu.org/licenses/gpl-3.0)
+v3](https://img.shields.io/badge/License-GPLv3-green.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 The package implements provides the grid search algorithm with a zoom.
 The grid search algorithm with a zoom aims to help solving difficult
@@ -159,7 +159,7 @@ ret1 = grid_search(Rastrigin, grid, silent=FALSE)
 #> The minimizer is believed to be in the neighbourhood of -0.02 -0.02.
 #> --------------------------------------------------------------------------------
 #>    user  system elapsed 
-#>   3.699   0.016   3.716 
+#>   3.722   0.007   3.730 
 #> ################################################################################
 ret1$par
 #> [1] -0.02 -0.02
@@ -178,7 +178,7 @@ ret2 = grid_search(Rastrigin, grid, num=2, parallel=TRUE, silent=FALSE)
 #> The minimizer is believed to be in the neighbourhood of -0.02 -0.02.
 #> --------------------------------------------------------------------------------
 #>    user  system elapsed 
-#>   6.160   0.256   0.992 
+#>   5.835   0.247   1.057 
 #> ################################################################################
 ret2$par
 #> [1] -0.02 -0.02
@@ -197,7 +197,7 @@ ret3 = grid_search(Rastrigin, grid, zoom=2, num=2, parallel=TRUE, silent=FALSE)
 #> The minimizer is believed to be in the neighbourhood of 5.590496e-05 5.590496e-05.
 #> --------------------------------------------------------------------------------
 #>    user  system elapsed 
-#>  12.511   1.573   2.228 
+#>  11.808   1.452   2.394 
 #> ################################################################################
 ret3$par
 #> [1] 5.590496e-05 5.590496e-05
@@ -216,7 +216,7 @@ ret3 = grid_search_check(Rastrigin, grid, zoom=2, num=2, parallel=TRUE, silent=F
 #> zoomgrid version 1.0.0 (Red Grid)
 #> --------------------------------------------------------------------------------
 #> Parallel computation runs with 8 cores.
-#> The expected time consumed by running the grid search is around 2.257304 seconds.
+#> The expected time consumed by running the grid search is around 2.429071 seconds.
 #> ################################################################################
 ret3 = grid_search(Rastrigin, grid, zoom=2, num=2, parallel=TRUE, silent=FALSE)
 #> ################################################################################
@@ -227,6 +227,6 @@ ret3 = grid_search(Rastrigin, grid, zoom=2, num=2, parallel=TRUE, silent=FALSE)
 #> The minimizer is believed to be in the neighbourhood of 5.590496e-05 5.590496e-05.
 #> --------------------------------------------------------------------------------
 #>    user  system elapsed 
-#>  15.374   1.787   2.712 
+#>  14.516   1.697   2.929 
 #> ################################################################################
 ```
