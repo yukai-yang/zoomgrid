@@ -156,7 +156,7 @@ ret1 = grid_search(Rastrigin, grid, silent=FALSE)
 #> ✔ Grid search with 0 zoom-in layers and 1 point each produced 1 result.
 #> The minimiser is believed to be in the neighbourhood of -0.0199999999999996 and
 #> -0.0199999999999996.
-#> ℹ Elapsed: 3.717s (user: 3.701s, system: 0.015s).
+#> ℹ Elapsed: 3.727s (user: 3.709s, system: 0.015s).
 ret1$par
 #> [1] -0.02 -0.02
 ```
@@ -173,7 +173,7 @@ ret2 = grid_search(Rastrigin, grid, num=2, parallel=TRUE, silent=FALSE)
 #> ✔ Grid search with 0 zoom-in layers and 2 points each produced 2 results.
 #> The minimiser is believed to be in the neighbourhood of -0.0199999999999996 and
 #> -0.0199999999999996.
-#> ℹ Elapsed: 2.578s (user: 0.598s, system: 0.013s).
+#> ℹ Elapsed: 2.597s (user: 0.599s, system: 0.014s).
 ret2$par
 #> [1] -0.02 -0.02
 ```
@@ -189,7 +189,7 @@ ret3 = grid_search(Rastrigin, grid, zoom=2, num=2, parallel=TRUE, silent=FALSE)
 #> ✔ Grid search with 2 zoom-in layers and 2 points each produced 14 results.
 #> The minimiser is believed to be in the neighbourhood of 5.59049615653446e-05
 #> and 5.59049615653446e-05.
-#> ℹ Elapsed: 4.893s (user: 1.274s, system: 0.042s).
+#> ℹ Elapsed: 4.855s (user: 1.262s, system: 0.042s).
 ret3$par
 #> [1] 5.590496e-05 5.590496e-05
 ```
@@ -206,7 +206,7 @@ ret3 = grid_search_check(Rastrigin, grid, zoom=2, num=2, parallel=TRUE, silent=F
 #> 
 #> ── zoomgrid version 1.1.0 (Red Grid) ───────────────────────────────────────────
 #> ℹ Parallel computation runs with 2 workers.
-#> ℹ The expected time consumed by running the grid search is around 4.64759 seconds.
+#> ℹ The expected time consumed by running the grid search is around 4.85733 seconds.
 ret3 = grid_search(Rastrigin, grid, zoom=2, num=2, parallel=TRUE, silent=FALSE)
 #> 
 #> ── zoomgrid version 1.1.0 (Red Grid) ───────────────────────────────────────────
@@ -214,5 +214,41 @@ ret3 = grid_search(Rastrigin, grid, zoom=2, num=2, parallel=TRUE, silent=FALSE)
 #> ✔ Grid search with 2 zoom-in layers and 2 points each produced 14 results.
 #> The minimiser is believed to be in the neighbourhood of 5.59049615653446e-05
 #> and 5.59049615653446e-05.
-#> ℹ Elapsed: 4.941s (user: 1.342s, system: 0.043s).
+#> ℹ Elapsed: 4.927s (user: 1.326s, system: 0.041s).
+```
+
+## Citation
+
+If you use the zoomgrid package in your research, please cite the
+underlying methodology.
+
+### Methodology
+
+Yang, Y. (2012). Modelling Nonlinear Vector Economic Time Series. PhD
+thesis, Aarhus University, Department of Economics and Business,
+CREATES. Available at:
+<https://pure.au.dk/ws/files/428886102/Yukai_Yang_PhD_Thesis.pdf>
+
+You can obtain the citation information directly from R by running:
+
+``` r
+citation("zoomgrid")
+#> To cite package 'zoomgrid' in publications use:
+#> 
+#>   Yang Y (2012). _Modelling Nonlinear Vector Economic Time Series_.
+#>   Ph.D. thesis, Aarhus University, Aarhus, Denmark. PhD thesis,
+#>   Department of Economics and Business, CREATES,
+#>   <https://pure.au.dk/ws/files/428886102/Yukai_Yang_PhD_Thesis.pdf>.
+#> 
+#> A BibTeX entry for LaTeX users is
+#> 
+#>   @PhdThesis{,
+#>     title = {Modelling Nonlinear Vector Economic Time Series},
+#>     author = {Yukai Yang},
+#>     year = {2012},
+#>     school = {Aarhus University},
+#>     address = {Aarhus, Denmark},
+#>     note = {PhD thesis, Department of Economics and Business, CREATES},
+#>     url = {https://pure.au.dk/ws/files/428886102/Yukai_Yang_PhD_Thesis.pdf},
+#>   }
 ```
