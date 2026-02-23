@@ -2,7 +2,7 @@
 ## utility functions
 #################################################################################
 
-vnum = "1.0.0"
+vnum = "1.1.0"
 packname = "(Red Grid)"
 
 # simple cat
@@ -75,24 +75,24 @@ build_subgrids <- function(mins, grid_base, decay = 0.5) {
       # Contract assumptions (internal assertions, not user-facing validation)
       # 1) gb must have at least 3 points if we require an interior index
       if (length(gb) < 3L) {
-        stop(sprintf("build_subgrids(): grid_base[[%d]] has length < 3; cannot form interior neighbourhood.", iter))
+        cli::cli_abort(
+          "{.fn build_subgrids}(): {.arg grid_base}[[{iter}]] has length < 3; cannot form interior neighbourhood."
+        )
       }
       
       # 2) mins point must match exactly one grid point
       idx <- which(mins[[jter]][iter] == gb)
       if (length(idx) != 1L) {
-        stop(sprintf(
-          "build_subgrids(): mins[[%d]][%d] does not match exactly one point in grid_base[[%d]] (matches=%d).",
-          jter, iter, iter, length(idx)
-        ))
+        cli::cli_abort(
+          "{.fn build_subgrids}(): {.arg mins}[[{jter}]][{iter}] does not match exactly one point in {.arg grid_base}[[{iter}]] (matches={length(idx)})."
+        )
       }
       
       # 3) you said boundary case does not occur: assert strict interior
       if (idx == 1L || idx == length(gb)) {
-        stop(sprintf(
-          "build_subgrids(): mins[[%d]][%d] lies on boundary of grid_base[[%d]] (index=%d).",
-          jter, iter, iter, idx
-        ))
+        cli::cli_abort(
+          "{.fn build_subgrids}(): {.arg mins}[[{jter}]][{iter}] lies on boundary of {.arg grid_base}[[{iter}]] (index={idx})."
+        )
       }
       
       tmp_base[[iter]] <-

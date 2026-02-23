@@ -41,9 +41,11 @@
 #' under \sQuote{Suggests} and are required only when parallel execution is requested.
 #'
 #' @section Author and Maintainer:
-#' Yukai Yang \email{yukai.yang@@statistik.uu.se}
+#' Yukai Yang
 #'
-#' Department of Statistics, Uppsala University.
+#' Department of Statistics, Uppsala University
+#'
+#' \email{yukai.yang@@statistik.uu.se}
 #'
 #' @section References:
 #' Yang, Y. (2012). \emph{Modelling Nonlinear Vector Economic Time Series}. PhD thesis,

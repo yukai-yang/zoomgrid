@@ -59,70 +59,90 @@
 #' build_grid(vx, c(from=1, to=2, by=.2), list(from=3, to=4, length=5))
 #'
 #' @export
-build_grid <- function(...){
-  args = list(...)
-  ret = list()
-
-  grid_base = list(); iter = 1
-  for(arg in args){
-    if(is.null(arg)) next
-
-    if(is.list(arg)){
-      nfrom = arg$from; if(is.null(nfrom)) next
-      nto = arg$to; if(is.null(nto)) next
-      if(nfrom > nto)
-        stop(simpleError("'from' is bigger than 'to'! Please check what you have input..."))
-
-      nby = arg$by
-      if(!is.null(nby)){
-        if(nby <= 0) stop(simpleError("'by' is not positive..."))
-
-        # with from, to, by
-        tmp = seq(from=nfrom, to=nto, by=nby)
-      }else{
-        nlength = arg$length; if(is.null(nlength)) next
-        if(nlength <= 0) stop(simpleError("'length' is not positive..."))
-
-        # with from, to, length
-        tmp = seq(from=nfrom, to=nto, length.out=nlength)
+build_grid <- function(...) {
+  args <- list(...)
+  ret  <- list()
+  
+  grid_base <- list()
+  iter <- 1L
+  
+  abort_from_to <- function(from, to) {
+    if (from > to) {
+      cli::cli_abort(
+        "'from' ({from}) is bigger than 'to' ({to}). Please check your input."
+      )
+    }
+    invisible(NULL)
+  }
+  
+  abort_positive <- function(x, name) {
+    if (!is.numeric(x) || length(x) != 1L || is.na(x) || x <= 0) {
+      cli::cli_abort("'{name}' must be a positive number. Got: {x}.")
+    }
+    invisible(NULL)
+  }
+  
+  for (arg in args) {
+    if (is.null(arg)) next
+    
+    tmp <- NULL
+    
+    if (is.list(arg)) {
+      nfrom <- arg$from; if (is.null(nfrom)) next
+      nto   <- arg$to;   if (is.null(nto))   next
+      
+      abort_from_to(nfrom, nto)
+      
+      nby <- arg$by
+      if (!is.null(nby)) {
+        abort_positive(nby, "by")
+        tmp <- seq(from = nfrom, to = nto, by = nby)
+      } else {
+        nlength <- arg$length; if (is.null(nlength)) next
+        abort_positive(nlength, "length")
+        tmp <- seq(from = nfrom, to = nto, length.out = nlength)
       }
-    }else if(is.vector(arg)){
-      if(!is.numeric(arg)) next
-
-      nfrom = arg["from"]
-      if(is.na(nfrom)){
+      
+    } else if (is.vector(arg)) {
+      if (!is.numeric(arg)) next
+      
+      nfrom <- unname(arg["from"])
+      
+      if (is.na(nfrom)) {
         # x case
-        tmp = sort(arg)
-      }else{
-        nto = arg["to"]; if(is.na(nto)) next
-        if(nfrom > nto)
-          stop(simpleError("'from' is bigger than 'to'! Please check what you have input..."))
-
-        nby = arg["by"]
-        if(!is.na(nby)){
-          if(nby <= 0) stop(simpleError("'by' is not positive..."))
-
-          # with from, to, by
-          tmp = seq(from=nfrom, to=nto, by=nby)
-        }else{
-          nlength = arg["length"]; if(is.na(nlength)) next
-          if(nlength <= 0) stop(simpleError("'length' is not positive..."))
-
-          # with from, to, length
-          tmp = seq(from=nfrom, to=nto, length.out=nlength)
+        tmp <- sort(arg)
+      } else {
+        nto <- unname(arg["to"])
+        if (is.na(nto)) next
+        
+        abort_from_to(nfrom, nto)
+        
+        nby <- unname(arg["by"])
+        if (!is.na(nby)) {
+          abort_positive(nby, "by")
+          tmp <- seq(from = nfrom, to = nto, by = nby)
+        } else {
+          nlength <- unname(arg["length"])
+          if (is.na(nlength)) next
+          abort_positive(nlength, "length")
+          tmp <- seq(from = nfrom, to = nto, length.out = nlength)
         }
       }
-    }else next
-
-    grid_base[[iter]] = tmp; iter = iter+1
+      
+    } else {
+      next
+    }
+    
+    grid_base[[iter]] <- tmp
+    iter <- iter + 1L
   }
-
-  ret$grid = expand.grid(grid_base, KEEP.OUT.ATTRS=FALSE)
-  ret$grid_base = grid_base
-  ret$size = nrow(ret$grid)
-  ret$npar = length(grid_base)
-  class(ret) = "GRID"
-  return(ret)
+  
+  ret$grid      <- expand.grid(grid_base, KEEP.OUT.ATTRS = FALSE)
+  ret$grid_base <- grid_base
+  ret$size      <- nrow(ret$grid)
+  ret$npar      <- length(grid_base)
+  class(ret)    <- "GRID"
+  ret
 }
 
 
@@ -219,16 +239,15 @@ build_grid <- function(...){
 #' }
 #'
 #' @export
-grid_search <- function(FUN, grid, MoreArgs=NULL, zoom=0, decay=0.5, num=1,
-                        parallel=FALSE, cores=NULL, silent=TRUE){
+grid_search <- function(FUN, grid, MoreArgs = NULL, zoom = 0, decay = 0.5, num = 1,
+                        parallel = FALSE, cores = NULL, silent = TRUE) {
   
-  if (!inherits(grid, "GRID"))
-    stop("The argument 'grid' is not an object of class 'GRID'.")
+  if (!inherits(grid, "GRID")) {
+    cli::cli_abort("The argument {.arg grid} is not an object of class {.cls GRID}.")
+  }
   
   if (!silent) {
-    cat0(paste0(rep("#", getOption("width")), collapse = ""))
-    cat0("zoomgrid version ", vnum, " ", packname)
-    cat0(paste0(rep("-", getOption("width")), collapse = ""))
+    cli::cli_h1("zoomgrid version {vnum} {packname}")
   }
   
   # Decide evaluation function and (optionally) configure futures once at the top level
@@ -237,7 +256,9 @@ grid_search <- function(FUN, grid, MoreArgs=NULL, zoom=0, decay=0.5, num=1,
     # Ensure optional parallel backend is available (future is in Suggests)
     if (!requireNamespace("future", quietly = TRUE) ||
         !requireNamespace("future.apply", quietly = TRUE)) {
-      stop("Parallel execution requires packages 'future' and 'future.apply'.")
+      cli::cli_abort(
+        "Parallel execution requires packages {.pkg future} and {.pkg future.apply}."
+      )
     }
     
     # Detect available cores once via future
@@ -248,7 +269,7 @@ grid_search <- function(FUN, grid, MoreArgs=NULL, zoom=0, decay=0.5, num=1,
     if (is.null(m)) m <- 2L
     
     # Validate m
-    if (!is.numeric(m) || length(m) != 1 || is.na(m) || m < 1) {
+    if (!is.numeric(m) || length(m) != 1L || is.na(m) || m < 1) {
       m <- 1L
     } else {
       m <- as.integer(m)
@@ -264,9 +285,10 @@ grid_search <- function(FUN, grid, MoreArgs=NULL, zoom=0, decay=0.5, num=1,
     future::plan(future::multisession, workers = cores)
     
     ftmp <- grid_peval
-    if (!silent) cat0("Parallel computation runs with ", cores, " workers.")
+    if (!silent) {
+      cli::cli_alert_info("Parallel computation runs with {cores} worker{?s}.")
+    }
   } else {
-    
     ftmp <- grid_seval
   }
   
@@ -277,20 +299,28 @@ grid_search <- function(FUN, grid, MoreArgs=NULL, zoom=0, decay=0.5, num=1,
     zoom = zoom, decay = decay, num = num, cores = cores
   )
   
-  if (!silent) cat0("The Grid Search of ", zoom, " zoom-in layers with ", num,
-                    " points each gives ", length(ret), " results.")
+  if (!silent) {
+    cli::cli_alert_success(
+      "Grid search with {zoom} zoom-in layer{?s} and {num} point{?s} each produced {length(ret)} result{?s}."
+    )
+  }
   
   par <- ftmp(FUN = FUN, grid = ret, MoreArgs = MoreArgs, num = 1, cores = cores)[[1]]
   
-  if (!silent) cat0("The minimizer is believed to be in the neighbourhood of ", par, ".")
-  
   if (!silent) {
-    cat0(paste0(rep("-", getOption("width")), collapse = ""))
-    print(proc.time() - ptm)
-    cat0(paste0(rep("#", getOption("width")), collapse = ""))
+    cli::cli_text(
+      "The minimiser is believed to be in the neighbourhood of {par}."
+    )
+    
+    dt <- proc.time() - ptm
+    # Print timing in a stable one-line way
+    cli::cli_alert_info(
+      "Elapsed: {format(unname(dt['elapsed']), digits = 4)}s (user: {format(unname(dt['user.self']), digits = 4)}s, system: {format(unname(dt['sys.self']), digits = 4)}s)."
+    )
+    
   }
   
-  return(list(par = par, points = ret))
+  list(par = par, points = ret)
 }
 
 
@@ -349,16 +379,15 @@ grid_search <- function(FUN, grid, MoreArgs=NULL, zoom=0, decay=0.5, num=1,
 #' }
 #'
 #' @export
-grid_search_check <- function(FUN, grid, MoreArgs=NULL, zoom=0, decay=0.5, num=1,
-                              parallel=FALSE, cores=NULL, silent=TRUE){
+grid_search_check <- function(FUN, grid, MoreArgs = NULL, zoom = 0, decay = 0.5, num = 1,
+                              parallel = FALSE, cores = NULL, silent = TRUE) {
   
-  if (!inherits(grid, "GRID"))
-    stop("The argument 'grid' is not an object of class 'GRID'.")
+  if (!inherits(grid, "GRID")) {
+    cli::cli_abort("The argument {.arg grid} is not an object of class {.cls GRID}.")
+  }
   
   if (!silent) {
-    cat0(paste0(rep("#", getOption("width")), collapse = ""))
-    cat0("zoomgrid version ", vnum, " ", packname)
-    cat0(paste0(rep("-", getOption("width")), collapse = ""))
+    cli::cli_h1("zoomgrid version {vnum} {packname}")
   }
   
   # Decide evaluation function and (optionally) configure futures once at the top level
@@ -367,7 +396,9 @@ grid_search_check <- function(FUN, grid, MoreArgs=NULL, zoom=0, decay=0.5, num=1
     # Ensure optional parallel backend is available (future is in Suggests)
     if (!requireNamespace("future", quietly = TRUE) ||
         !requireNamespace("future.apply", quietly = TRUE)) {
-      stop("Parallel execution requires packages 'future' and 'future.apply'.")
+      cli::cli_abort(
+        "Parallel execution requires packages {.pkg future} and {.pkg future.apply}."
+      )
     }
     
     # Detect available cores once via future
@@ -378,7 +409,7 @@ grid_search_check <- function(FUN, grid, MoreArgs=NULL, zoom=0, decay=0.5, num=1
     if (is.null(m)) m <- 2L
     
     # Validate m
-    if (!is.numeric(m) || length(m) != 1 || is.na(m) || m < 1) {
+    if (!is.numeric(m) || length(m) != 1L || is.na(m) || m < 1) {
       m <- 1L
     } else {
       m <- as.integer(m)
@@ -394,7 +425,9 @@ grid_search_check <- function(FUN, grid, MoreArgs=NULL, zoom=0, decay=0.5, num=1
     future::plan(future::multisession, workers = cores)
     
     ftmp <- grid_peval
-    if (!silent) cat0("Parallel computation runs with ", cores, " workers.")
+    if (!silent) {
+      cli::cli_alert_info("Parallel computation runs with {cores} worker{?s}.")
+    }
   } else {
     
     ftmp <- grid_seval
@@ -441,7 +474,6 @@ grid_search_check <- function(FUN, grid, MoreArgs=NULL, zoom=0, decay=0.5, num=1
   tx2 <- ptm[3]
   nn2 <- new_grid$size / cores
   
-  # forecast the time
   # forecast the time (robust)
   y <- c(tx1, tx2)
   x <- c(nn1, nn2)
@@ -474,9 +506,10 @@ grid_search_check <- function(FUN, grid, MoreArgs=NULL, zoom=0, decay=0.5, num=1
   ret <- sum((nn * (decay^(tmp * grid$npar)) * rr + aa) * (num^tmp))
   
   if (!silent) {
-    cat0("The expected time consumed by running the grid search is around ", ret, " seconds.")
-    cat0(paste0(rep("#", getOption("width")), collapse = ""))
+    cli::cli_alert_info(
+      "The expected time consumed by running the grid search is around {format(ret, digits = 6)} seconds."
+    )
   }
   
-  return(ret)
+  ret
 }
