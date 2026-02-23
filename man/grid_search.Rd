@@ -4,8 +4,17 @@
 \alias{grid_search}
 \title{Carry out the grid search algorithm with a zoom.}
 \usage{
-grid_search(FUN, grid, MoreArgs = NULL, zoom = 0, decay = 0.5,
-  num = 1, parallel = FALSE, cores = NULL, silent = TRUE)
+grid_search(
+  FUN,
+  grid,
+  MoreArgs = NULL,
+  zoom = 0,
+  decay = 0.5,
+  num = 1,
+  parallel = FALSE,
+  cores = NULL,
+  silent = TRUE
+)
 }
 \arguments{
 \item{FUN}{the target function to be minimized.}

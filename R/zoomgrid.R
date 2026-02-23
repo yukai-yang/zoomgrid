@@ -61,9 +61,8 @@
 #'
 #' \code{\link{grid_search}} conduct the grid search algorithm with a zoom.
 #'
-#' @docType package
-#' @name zoomgrid
-NULL
+#' @keywords internal
+"_PACKAGE"
 
 #' @importFrom parallel mcmapply detectCores
 NULL

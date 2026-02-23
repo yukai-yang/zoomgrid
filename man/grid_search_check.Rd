@@ -4,8 +4,17 @@
 \alias{grid_search_check}
 \title{Check the time consumed by running the grid search algorithm with a zoom.}
 \usage{
-grid_search_check(FUN, grid, MoreArgs = NULL, zoom = 0, decay = 0.5,
-  num = 1, parallel = FALSE, cores = NULL, silent = TRUE)
+grid_search_check(
+  FUN,
+  grid,
+  MoreArgs = NULL,
+  zoom = 0,
+  decay = 0.5,
+  num = 1,
+  parallel = FALSE,
+  cores = NULL,
+  silent = TRUE
+)
 }
 \arguments{
 \item{FUN}{the target function to be minimized.}

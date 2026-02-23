@@ -44,6 +44,7 @@ where
 
 - \code{length}: desired length.
 
+
 There are many different ways to organize the points on the grid for certain argument of the target function,
 the user can make them freely and input directly by \code{build_grid(x, ...)}.
 Notice that \code{x} does not need to be increasing, as the function will sort it.
