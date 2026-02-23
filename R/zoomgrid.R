@@ -2,7 +2,6 @@
 ## package name: zoomgrid
 ## author: Yukai Yang
 ## Statistiska Inst., Uppsala Universitet
-## Dec 2018
 #################################################################################
 
 
