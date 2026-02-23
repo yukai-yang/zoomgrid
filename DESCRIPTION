@@ -8,16 +8,15 @@ Description: Implements a grid search algorithm with an adaptive zooming strateg
     The method recursively refines the search region around promising grid points, 
     providing reliable initial values for subsequent optimisation procedures. 
     The algorithm is computationally efficient in moderate- to high-dimensional settings.
-Depends: R (>= 3.5.0)
+Depends: R (>= 4.0.0)
 License: GPL-3
 Encoding: UTF-8
 RoxygenNote: 7.3.3
 URL: https://github.com/yukai-yang/zoomgrid
 BugReports: https://github.com/yukai-yang/zoomgrid/issues
-Imports:
+Suggests:
     future,
-    future.apply
-Suggests: 
+    future.apply,
     knitr,
     rmarkdown
 VignetteBuilder: knitr
