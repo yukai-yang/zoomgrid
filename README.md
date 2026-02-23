@@ -156,7 +156,7 @@ ret1 = grid_search(Rastrigin, grid, silent=FALSE)
 #> ✔ Grid search with 0 zoom-in layers and 1 point each produced 1 result.
 #> The minimiser is believed to be in the neighbourhood of -0.0199999999999996 and
 #> -0.0199999999999996.
-#> ℹ Elapsed: 3.727s (user: 3.709s, system: 0.015s).
+#> ℹ Elapsed: 3.837s (user: 3.798s, system: 0.021s).
 ret1$par
 #> [1] -0.02 -0.02
 ```
@@ -173,7 +173,7 @@ ret2 = grid_search(Rastrigin, grid, num=2, parallel=TRUE, silent=FALSE)
 #> ✔ Grid search with 0 zoom-in layers and 2 points each produced 2 results.
 #> The minimiser is believed to be in the neighbourhood of -0.0199999999999996 and
 #> -0.0199999999999996.
-#> ℹ Elapsed: 2.597s (user: 0.599s, system: 0.014s).
+#> ℹ Elapsed: 2.605s (user: 0.606s, system: 0.014s).
 ret2$par
 #> [1] -0.02 -0.02
 ```
@@ -189,7 +189,7 @@ ret3 = grid_search(Rastrigin, grid, zoom=2, num=2, parallel=TRUE, silent=FALSE)
 #> ✔ Grid search with 2 zoom-in layers and 2 points each produced 14 results.
 #> The minimiser is believed to be in the neighbourhood of 5.59049615653446e-05
 #> and 5.59049615653446e-05.
-#> ℹ Elapsed: 4.855s (user: 1.262s, system: 0.042s).
+#> ℹ Elapsed: 4.855s (user: 1.277s, system: 0.041s).
 ret3$par
 #> [1] 5.590496e-05 5.590496e-05
 ```
@@ -206,7 +206,7 @@ ret3 = grid_search_check(Rastrigin, grid, zoom=2, num=2, parallel=TRUE, silent=F
 #> 
 #> ── zoomgrid version 1.1.0 (Red Grid) ───────────────────────────────────────────
 #> ℹ Parallel computation runs with 2 workers.
-#> ℹ The expected time consumed by running the grid search is around 4.85733 seconds.
+#> ℹ The expected time consumed by running the grid search is around 4.61959 seconds.
 ret3 = grid_search(Rastrigin, grid, zoom=2, num=2, parallel=TRUE, silent=FALSE)
 #> 
 #> ── zoomgrid version 1.1.0 (Red Grid) ───────────────────────────────────────────
@@ -214,7 +214,7 @@ ret3 = grid_search(Rastrigin, grid, zoom=2, num=2, parallel=TRUE, silent=FALSE)
 #> ✔ Grid search with 2 zoom-in layers and 2 points each produced 14 results.
 #> The minimiser is believed to be in the neighbourhood of 5.59049615653446e-05
 #> and 5.59049615653446e-05.
-#> ℹ Elapsed: 4.927s (user: 1.326s, system: 0.041s).
+#> ℹ Elapsed: 4.935s (user: 1.317s, system: 0.042s).
 ```
 
 ## Citation
