@@ -222,8 +222,8 @@ build_grid <- function(...){
 grid_search <- function(FUN, grid, MoreArgs=NULL, zoom=0, decay=0.5, num=1,
                         parallel=FALSE, cores=NULL, silent=TRUE){
   
-  if (class(grid) != "GRID")
-    stop(simpleError("The argument 'grid' is not an object of class 'GRID'."))
+  if (!inherits(grid, "GRID"))
+    stop("The argument 'grid' is not an object of class 'GRID'.")
   
   if (!silent) {
     cat0(paste0(rep("#", getOption("width")), collapse = ""))
@@ -352,8 +352,8 @@ grid_search <- function(FUN, grid, MoreArgs=NULL, zoom=0, decay=0.5, num=1,
 grid_search_check <- function(FUN, grid, MoreArgs=NULL, zoom=0, decay=0.5, num=1,
                               parallel=FALSE, cores=NULL, silent=TRUE){
   
-  if (class(grid) != "GRID")
-    stop(simpleError("The argument 'grid' is not an object of class 'GRID'."))
+  if (!inherits(grid, "GRID"))
+    stop("The argument 'grid' is not an object of class 'GRID'.")
   
   if (!silent) {
     cat0(paste0(rep("#", getOption("width")), collapse = ""))
