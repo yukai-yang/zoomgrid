@@ -67,14 +67,14 @@ ls("package:zoomgrid")
 Consider the two-dimensional **Rastrigin function**, which is a
 non-convex function widely used for testing optimisation algorithms.
 
-![](figures/gif.latex.gif)
+![](man/figures/gif.latex.gif)
 
 where *x*<sub>*i*</sub> ∈ \[−5.12, 5.12\] and *A* = 10. It has many
 local minima and its global minimum is at (0, 0) with the minimum value
 0.
 
 <figure>
-<img src="figures/Rastrigin_function.png"
+<img src="man/figures/Rastrigin_function.png"
 alt="Diegotorquemada [Public domain], from Wikimedia Commons" />
 <figcaption aria-hidden="true">Diegotorquemada [Public domain], from
 Wikimedia Commons</figcaption>
@@ -158,7 +158,7 @@ ret1 = grid_search(Rastrigin, grid, silent=FALSE)
 #> The minimizer is believed to be in the neighbourhood of -0.02 -0.02.
 #> --------------------------------------------------------------------------------
 #>    user  system elapsed 
-#>   3.835   0.017   3.858 
+#>   3.689   0.016   3.706 
 #> ################################################################################
 ret1$par
 #> [1] -0.02 -0.02
@@ -178,7 +178,7 @@ ret2 = grid_search(Rastrigin, grid, num=2, parallel=TRUE, silent=FALSE)
 #> The minimizer is believed to be in the neighbourhood of -0.02 -0.02.
 #> --------------------------------------------------------------------------------
 #>    user  system elapsed 
-#>   0.614   0.014   2.661 
+#>   0.581   0.013   2.561 
 #> ################################################################################
 ret2$par
 #> [1] -0.02 -0.02
@@ -197,7 +197,7 @@ ret3 = grid_search(Rastrigin, grid, zoom=2, num=2, parallel=TRUE, silent=FALSE)
 #> The minimizer is believed to be in the neighbourhood of 5.590496e-05 5.590496e-05.
 #> --------------------------------------------------------------------------------
 #>    user  system elapsed 
-#>   1.324   0.043   4.987 
+#>   1.281   0.041   4.887 
 #> ################################################################################
 ret3$par
 #> [1] 5.590496e-05 5.590496e-05
@@ -216,7 +216,7 @@ ret3 = grid_search_check(Rastrigin, grid, zoom=2, num=2, parallel=TRUE, silent=F
 #> zoomgrid version 1.0.0 (Red Grid)
 #> --------------------------------------------------------------------------------
 #> Parallel computation runs with 2 workers.
-#> The expected time consumed by running the grid search is around 4.686098 seconds.
+#> The expected time consumed by running the grid search is around 4.672098 seconds.
 #> ################################################################################
 ret3 = grid_search(Rastrigin, grid, zoom=2, num=2, parallel=TRUE, silent=FALSE)
 #> ################################################################################
@@ -227,6 +227,6 @@ ret3 = grid_search(Rastrigin, grid, zoom=2, num=2, parallel=TRUE, silent=FALSE)
 #> The minimizer is believed to be in the neighbourhood of 5.590496e-05 5.590496e-05.
 #> --------------------------------------------------------------------------------
 #>    user  system elapsed 
-#>   1.292   0.042   4.912 
+#>   1.292   0.037   4.858 
 #> ################################################################################
 ```
