@@ -1,11 +1,10 @@
 bibentry(
-  bibtype = "Article",
-  title = ,
-  author = ,
-  journal = ,
-  year = ,
-  volume = ,
-  number = ,
-  pages = ,
-  doi =
+  bibtype = "PhDThesis",
+  title = "Modelling Nonlinear Vector Economic Time Series",
+  author = person("Yukai", "Yang"),
+  year = "2012",
+  school = "Aarhus University",
+  address = "Aarhus, Denmark",
+  note = "PhD thesis, Department of Economics and Business, CREATES",
+  url = "https://pure.au.dk/ws/files/428886102/Yukai_Yang_PhD_Thesis.pdf"
 )
