@@ -1,10 +1,33 @@
+citHeader("To cite the zoomgrid package or its underlying methodology, please use the following references:")
+
+# Software
+bibentry(
+  bibtype = "Manual",
+  title = "zoomgrid: Grid Search Algorithm with a Zoom",
+  author = person(
+    given  = "Yukai",
+    family = "Yang",
+    email  = "yukai.yang@statistik.uu.se",
+    role   = c("aut", "cre"),
+    comment = c(ORCID = "0000-0002-2623-8549")
+  ),
+  year  = "2019",
+  note  = "R package version 1.1.0 (CRAN release 2026-02-28)",
+  doi   = "10.32614/CRAN.package.zoomgrid",
+  url   = "https://CRAN.R-project.org/package=zoomgrid"
+)
+
+# PhD thesis (methodological foundation)
 bibentry(
   bibtype = "PhDThesis",
   title = "Modelling Nonlinear Vector Economic Time Series",
-  author = person("Yukai", "Yang"),
-  year = "2012",
-  school = "Aarhus University",
+  author = person(
+    given  = "Yukai",
+    family = "Yang"
+  ),
+  year    = "2012",
+  school  = "Aarhus University",
   address = "Aarhus, Denmark",
-  note = "PhD thesis, Department of Economics and Business, CREATES",
-  url = "https://pure.au.dk/ws/files/428886102/Yukai_Yang_PhD_Thesis.pdf"
+  note    = "PhD thesis, Department of Economics and Business, CREATES",
+  url     = "https://pure.au.dk/ws/files/428886102/Yukai_Yang_PhD_Thesis.pdf"
 )
